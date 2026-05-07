@@ -8,9 +8,25 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 5724214510226308548, guid: c4a69e964de31604a9267bcc59bbbc1b, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5724214510226308550, guid: c4a69e964de31604a9267bcc59bbbc1b, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5724214510226308551, guid: c4a69e964de31604a9267bcc59bbbc1b, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5724214510226308551, guid: c4a69e964de31604a9267bcc59bbbc1b, type: 3}
       propertyPath: Walkable.m_Bits
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6095399427478354402, guid: c4a69e964de31604a9267bcc59bbbc1b, type: 3}
+      propertyPath: m_Enabled
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8203889226637907145, guid: c4a69e964de31604a9267bcc59bbbc1b, type: 3}
       propertyPath: m_LocalScale.x
@@ -66,10 +82,55 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8203889226638395625, guid: c4a69e964de31604a9267bcc59bbbc1b, type: 3}
       propertyPath: m_Name
-      value: Ninja Warrior Variant
+      value: NinjaEnemy
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 8203889226638395625, guid: c4a69e964de31604a9267bcc59bbbc1b, type: 3}
+      insertIndex: 1
+      addedObject: {fileID: -64395158851554223}
+    - targetCorrespondingSourceObject: {fileID: 8203889226638395625, guid: c4a69e964de31604a9267bcc59bbbc1b, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: -8762327135058916786}
   m_SourcePrefab: {fileID: 100100000, guid: c4a69e964de31604a9267bcc59bbbc1b, type: 3}
+--- !u!1 &9216339326981603028 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8203889226638395625, guid: c4a69e964de31604a9267bcc59bbbc1b, type: 3}
+  m_PrefabInstance: {fileID: 1025996084412741181}
+  m_PrefabAsset: {fileID: 0}
+--- !u!95 &-64395158851554223
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9216339326981603028}
+  m_Enabled: 1
+  m_Avatar: {fileID: 9000000, guid: 24bdb7cc7a8d8a745a84df6c531bc19d, type: 3}
+  m_Controller: {fileID: 9100000, guid: 85239969bf6b2401890c96264807455a, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 1
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &-8762327135058916786
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9216339326981603028}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5bb83944670594030876c11c455b53cf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: '::'

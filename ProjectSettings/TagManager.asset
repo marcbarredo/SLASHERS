@@ -8,6 +8,8 @@ TagManager:
   - BlendPlane1
   - Collide
   - Ground
+  - FxTemporaire
+  - Enemy
   layers:
   - Default
   - TransparentFX

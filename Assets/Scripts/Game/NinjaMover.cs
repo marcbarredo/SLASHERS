@@ -4,10 +4,12 @@ public class NinjaMover : MonoBehaviour
 {
     [SerializeField] private Transform target;
     [SerializeField] private float speed = 1.2f;
-    [SerializeField] private float stopDistance = 0.35f;
+    [SerializeField] private float stopDistance = 5f;
 
     public void SetTarget(Transform t) => target = t;
+
     public void SetSpeed(float s) => speed = Mathf.Max(0f, s);
+
     void Update()
     {
         if (!target) return;
@@ -21,9 +23,11 @@ public class NinjaMover : MonoBehaviour
         Vector3 delta = goal - pos;
         float dist = delta.magnitude;
 
+        // Stops before reaching the tower
         if (dist <= stopDistance) return;
 
         Vector3 dir = delta / dist;
+
         transform.position = pos + dir * speed * Time.deltaTime;
 
         // Face movement direction

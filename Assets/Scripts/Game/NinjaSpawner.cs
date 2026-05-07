@@ -7,33 +7,26 @@ public class NinjaSpawner : MonoBehaviour
     [SerializeField] private GameObject ninjaPrefab;
     [SerializeField] private float ninjaSpeed = 2.0f;
 
-
     [SerializeField] private Renderer landRenderer;
-
-    
     [SerializeField] private Transform fallbackCenter;
 
+    [Header("Audio")]
+    [SerializeField] private AudioSource audioSource;
+    [SerializeField] private AudioClip spawnSound;
+
     [Header("Spawn Circle Settings")]
-    
     [Range(0.1f, 1f)]
     [SerializeField] private float radiusFactor = 0.9f;
 
-  
     [SerializeField] private float fixedRadius = 10f;
-
-
     [SerializeField] private float edgeInset = 0.25f;
 
     [Header("Spawn Rules")]
-  
     [SerializeField] private float minDistanceFromTower = 3f;
-
     [SerializeField] private int maxTries = 40;
 
     [Header("Ground Snapping")]
-
     [SerializeField] private string groundTag = "Ground";
-
     [SerializeField] private float rayStartHeight = 10f;
     [SerializeField] private float groundOffset = 0.02f;
 
@@ -68,6 +61,11 @@ public class NinjaSpawner : MonoBehaviour
 
         GameObject ninja = Instantiate(ninjaPrefab, pos, Quaternion.identity);
 
+        if (audioSource != null && spawnSound != null)
+        {
+            audioSource.PlayOneShot(spawnSound);
+        }
+
         var mover = ninja.GetComponent<NinjaMover>();
         if (mover != null)
         {
@@ -76,7 +74,7 @@ public class NinjaSpawner : MonoBehaviour
         }
     }
 
-        bool TryGetSpawnPosition(out Vector3 pos)
+    bool TryGetSpawnPosition(out Vector3 pos)
     {
         Vector3 center = GetSpawnCenter();
         float radius = GetSpawnRadius();
