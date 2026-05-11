@@ -14,6 +14,10 @@ public class SkyNinjaAI : MonoBehaviour
     [SerializeField] private Animator animator;
     [SerializeField] private Transform target;
 
+    [Header("Audio")]
+    [SerializeField] private AudioSource hitAudioSource;
+    [SerializeField] private AudioClip towerHitSound;
+
     [Header("Movement")]
     [SerializeField] private float runSpeed = 3f;
     [SerializeField] private float rotationSpeed = 10f;
@@ -198,6 +202,15 @@ public class SkyNinjaAI : MonoBehaviour
         }
     }
 
+    private void PlayTowerHitSound()
+    {
+        if (hitAudioSource != null && towerHitSound != null)
+        {
+            hitAudioSource.pitch = Random.Range(0.9f, 1.1f);
+            hitAudioSource.PlayOneShot(towerHitSound);
+        }
+    }
+
     private void UpdateAttacking()
     {
         attackTimer += Time.deltaTime;
@@ -210,6 +223,8 @@ public class SkyNinjaAI : MonoBehaviour
 
             if (animator)
                 animator.SetTrigger(attackTrigger);
+                
+            PlayTowerHitSound();
         }
 
         FaceTarget();

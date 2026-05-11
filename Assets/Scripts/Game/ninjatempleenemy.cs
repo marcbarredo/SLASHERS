@@ -6,10 +6,18 @@ public class NinjaTempleEnemy : MonoBehaviour
     [SerializeField] private Animator animator;
     [SerializeField] private GameObject targetTemple;
 
+    [Header("Audio")]
+    [SerializeField] private AudioSource hitAudioSource;
+    [SerializeField] private AudioClip towerHitSound;
+
     [Header("Movement")]
     [SerializeField] private float moveSpeed = 3f;
     [SerializeField] private float rotationSpeed = 10f;
     [SerializeField] private float attackDistance = 1.5f;
+
+    [Header("Attack")]
+    [SerializeField] private float attackInterval = 1f;
+    private float attackTimer;
 
     [Header("Falling")]
     [SerializeField] private float gravity = 20f;
@@ -43,6 +51,16 @@ public class NinjaTempleEnemy : MonoBehaviour
         if (isAttacking)
         {
             FaceTarget();
+
+            attackTimer += Time.deltaTime;
+
+            if (attackTimer >= attackInterval)
+            {
+                attackTimer = 0f;
+
+                PlayTowerHitSound();
+            }
+
             return;
         }
 
@@ -141,6 +159,16 @@ public class NinjaTempleEnemy : MonoBehaviour
 
         FaceTarget();
     }
+
+    private void PlayTowerHitSound()
+    {
+        if (hitAudioSource != null && towerHitSound != null)
+        {
+            hitAudioSource.pitch = Random.Range(0.9f, 1.1f);
+            hitAudioSource.PlayOneShot(towerHitSound);
+        }
+    }
+
 
     private void FaceTarget()
     {
