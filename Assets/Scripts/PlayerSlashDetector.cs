@@ -1,10 +1,4 @@
 using UnityEngine;
-
-/// <summary>
-/// Attach this to the tracked controller / player object that moves with PlayerMovement.
-/// It detects fast cuts on the XZ floor plane, shows a TrailRenderer only when moving fast,
-/// and kills enemies only when the slash is close to the enemy and parallel to its arrow.
-/// </summary>
 [RequireComponent(typeof(PlayerMovement))]
 public class PlayerSlashDetector : MonoBehaviour
 {

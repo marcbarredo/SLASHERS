@@ -28,7 +28,6 @@ public class EnemyCutDirection : MonoBehaviour
             return;
         }
 
-        // Hide arrow immediately when enemy spawns
         arrowTransform.gameObject.SetActive(false);
 
         requiredCutDirection = (CutDirection)Random.Range(0, 4);
@@ -38,8 +37,15 @@ public class EnemyCutDirection : MonoBehaviour
 
         Debug.Log(gameObject.name + " cut direction is " + requiredCutDirection);
 
-        // Show arrow after delay
         StartCoroutine(ShowArrowAfterDelay());
+    }
+
+    private void LateUpdate()
+    {
+        if (arrowTransform != null)
+        {
+            UpdateArrowVisual();
+        }
     }
 
     private IEnumerator ShowArrowAfterDelay()
@@ -76,13 +82,7 @@ public class EnemyCutDirection : MonoBehaviour
 
     private void UpdateArrowVisual()
     {
-        if (arrowTransform == null)
-        {
-            Debug.LogWarning("CutDirectionArrow was not found on " + gameObject.name);
-            return;
-        }
-
-        // Rotate around Y for your top-down/floor direction
-        arrowTransform.localRotation = Quaternion.Euler(0f, arrowAngle, 0f);
+        // WORLD SPACE rotation
+        arrowTransform.rotation = Quaternion.Euler(0f, arrowAngle, 0f);
     }
 }
