@@ -11,12 +11,20 @@ public class EnemyCutDirection : MonoBehaviour
         DiagonalBackslash
     }
 
+    public enum ArrowPointType
+    {
+        Start,
+        End
+    }
+
     public CutDirection requiredCutDirection;
 
     [SerializeField] private float arrowAppearDelay = 1f;
 
     private Transform arrowTransform;
     private float arrowAngle;
+
+    private bool touchedStartFirst = false;
 
     private void Start()
     {
@@ -84,5 +92,32 @@ public class EnemyCutDirection : MonoBehaviour
     {
         // WORLD SPACE rotation
         arrowTransform.rotation = Quaternion.Euler(0f, arrowAngle, 0f);
+    }
+
+    public void RegisterArrowPointHit(ArrowPointType pointType)
+    {
+        if (pointType == ArrowPointType.Start)
+        {
+            touchedStartFirst = true;
+            Debug.Log("Hit START of arrow");
+            return;
+        }
+
+        if (pointType == ArrowPointType.End)
+        {
+            if (touchedStartFirst)
+            {
+                Debug.Log("CORRECT CUT DIRECTION!");
+
+                // Put your enemy death / cut logic here
+                Destroy(gameObject);
+            }
+            else
+            {
+                Debug.Log("WRONG CUT DIRECTION. You hit END first.");
+            }
+
+            touchedStartFirst = false;
+        }
     }
 }

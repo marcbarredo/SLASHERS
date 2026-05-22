@@ -10,6 +10,8 @@ TagManager:
   - Ground
   - FxTemporaire
   - Enemy
+  - katana
+  - Katana
   layers:
   - Default
   - TransparentFX
