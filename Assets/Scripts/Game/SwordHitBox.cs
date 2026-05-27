@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class SwordHitbox : MonoBehaviour
 {
-    [SerializeField] private int damage = 10;
+    [SerializeField] private int damage = 30;
     [SerializeField] private float hitCooldown = 1f;
 
     private float _lastHitTime;

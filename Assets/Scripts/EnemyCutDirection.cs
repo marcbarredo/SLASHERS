@@ -17,17 +17,29 @@ public class EnemyCutDirection : MonoBehaviour
         End
     }
 
+    [Header("Cut Direction")]
     public CutDirection requiredCutDirection;
 
+    [Header("Arrow")]
     [SerializeField] private float arrowAppearDelay = 1f;
+
+    [Header("Death")]
+    [SerializeField] private AudioClip dieSound;
+    [SerializeField] private float vanishDuration = 0.8f;
+    [SerializeField] private bool shrinkOnDeath = true;
 
     private Transform arrowTransform;
     private float arrowAngle;
 
     private bool touchedStartFirst = false;
+    private bool isDead = false;
+
+    private Vector3 originalScale;
 
     private void Start()
     {
+        originalScale = transform.localScale;
+
         arrowTransform = transform.Find("CutDirectionArrow");
 
         if (arrowTransform == null)
@@ -38,7 +50,8 @@ public class EnemyCutDirection : MonoBehaviour
 
         arrowTransform.gameObject.SetActive(false);
 
-        requiredCutDirection = (CutDirection)Random.Range(0, 4);
+        ////////////////////////////////////requiredCutDirection = (CutDirection)Random.Range(0, 4);
+        requiredCutDirection = (CutDirection)Random.Range(0, 2);
 
         SetArrowAngle();
         UpdateArrowVisual();
@@ -50,7 +63,7 @@ public class EnemyCutDirection : MonoBehaviour
 
     private void LateUpdate()
     {
-        if (arrowTransform != null)
+        if (arrowTransform != null && !isDead)
         {
             UpdateArrowVisual();
         }
@@ -60,7 +73,7 @@ public class EnemyCutDirection : MonoBehaviour
     {
         yield return new WaitForSeconds(arrowAppearDelay);
 
-        if (arrowTransform != null)
+        if (arrowTransform != null && !isDead)
         {
             arrowTransform.gameObject.SetActive(true);
         }
@@ -90,12 +103,13 @@ public class EnemyCutDirection : MonoBehaviour
 
     private void UpdateArrowVisual()
     {
-        // WORLD SPACE rotation
         arrowTransform.rotation = Quaternion.Euler(0f, arrowAngle, 0f);
     }
 
     public void RegisterArrowPointHit(ArrowPointType pointType)
     {
+        if (isDead) return;
+
         if (pointType == ArrowPointType.Start)
         {
             touchedStartFirst = true;
@@ -108,9 +122,7 @@ public class EnemyCutDirection : MonoBehaviour
             if (touchedStartFirst)
             {
                 Debug.Log("CORRECT CUT DIRECTION!");
-
-                // Put your enemy death / cut logic here
-                Destroy(gameObject);
+                StartCoroutine(DieAndVanish());
             }
             else
             {
@@ -119,5 +131,46 @@ public class EnemyCutDirection : MonoBehaviour
 
             touchedStartFirst = false;
         }
+    }
+
+    private IEnumerator DieAndVanish()
+    {
+        if (isDead) yield break;
+        isDead = true;
+
+        if (arrowTransform != null)
+            arrowTransform.gameObject.SetActive(false);
+
+        NinjaMover mover = GetComponent<NinjaMover>();
+        if (mover != null)
+            mover.enabled = false;
+
+        Collider enemyCollider = GetComponent<Collider>();
+        if (enemyCollider != null)
+            enemyCollider.enabled = false;
+
+        AudioSource audioSource = GetComponent<AudioSource>();
+        if (audioSource != null && dieSound != null)
+        {
+            audioSource.pitch = Random.Range(0.95f, 1.05f);
+            audioSource.PlayOneShot(dieSound);
+        }
+
+        float timer = 0f;
+
+        while (timer < vanishDuration)
+        {
+            timer += Time.deltaTime;
+            float t = timer / vanishDuration;
+
+            if (shrinkOnDeath)
+            {
+                transform.localScale = Vector3.Lerp(originalScale, Vector3.zero, t);
+            }
+
+            yield return null;
+        }
+
+        Destroy(gameObject);
     }
 }

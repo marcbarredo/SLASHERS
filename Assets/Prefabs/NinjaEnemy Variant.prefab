@@ -326,7 +326,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: '::'
   pointType: 0
-  parentArrow: {fileID: 1745351773539549046}
 --- !u!1 &6763706192612196171
 GameObject:
   m_ObjectHideFlags: 0
@@ -394,7 +393,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: '::'
   pointType: 1
-  parentArrow: {fileID: 1745351773539549046}
 --- !u!1001 &6256418899287327866
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -619,6 +617,10 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 9
       objectReference: {fileID: 0}
+    - target: {fileID: 3230751702496550951, guid: a66b5607f489b854095e06b50ea1e6be, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5542613420282849133, guid: a66b5607f489b854095e06b50ea1e6be, type: 3}
       propertyPath: m_Layer
       value: 9
@@ -716,6 +718,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 9216339326981603028, guid: a66b5607f489b854095e06b50ea1e6be, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1745351773539549046}
+    - targetCorrespondingSourceObject: {fileID: 9216339326981603028, guid: a66b5607f489b854095e06b50ea1e6be, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 3484049173896259980}
   m_SourcePrefab: {fileID: 100100000, guid: a66b5607f489b854095e06b50ea1e6be, type: 3}
 --- !u!82 &857723285671977513 stripped
 AudioSource:
@@ -767,9 +772,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::NinjaMover
   target: {fileID: 0}
-  speed: 1.2
-  stopDistance: 2.5
-  attackInterval: 1
+  speed: 1.5
+  stopDistance: 6
+  attackInterval: 1.5
+  towerDamage: 10
   hitAudioSource: {fileID: 857723285671977513}
   towerHitSound: {fileID: 8300000, guid: e75c3147c717e49b7b6967125b3f1c6d, type: 3}
 --- !u!114 &4974747263891704299
@@ -804,3 +810,21 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::EnemyCutDirection
   requiredCutDirection: 0
   arrowAppearDelay: 1
+  dieSound: {fileID: 8300000, guid: 2a084c1271a12e94eb48169f2306208a, type: 3}
+  vanishDuration: 2
+  shrinkOnDeath: 1
+--- !u!114 &3484049173896259980
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2969068555833490094}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 61e0e47d68b94954ab07722c792d87df, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::NinjaAnimationEventReceiver
+  audioSource: {fileID: 0}
+  footstepSound: {fileID: 0}
+  attackEffect: {fileID: 0}

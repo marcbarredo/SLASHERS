@@ -18,12 +18,21 @@ public class TempleHealth : MonoBehaviour
     [Header("Death Audio")]
     [SerializeField] private AudioSource explosionAudioSource;
     [SerializeField] private AudioClip explosionClip;
+
+    [Header("Game Manager")]
+    [SerializeField] private GameManager gameManager;
+
     private bool isDead = false;
 
-    private void Awake()
+    private void Start()
     {
         currentHealth = maxHealth;
         UpdateHealthBar();
+
+        if (gameManager == null)
+        {
+            gameManager = FindFirstObjectByType<GameManager>();
+        }
     }
 
     public void TakeDamage(int damage)
@@ -32,6 +41,8 @@ public class TempleHealth : MonoBehaviour
 
         currentHealth -= damage;
         currentHealth = Mathf.Clamp(currentHealth, 0, maxHealth);
+
+        Debug.Log("Temple took damage: " + damage + ". Current health: " + currentHealth);
 
         UpdateHealthBar();
 
@@ -51,7 +62,10 @@ public class TempleHealth : MonoBehaviour
 
     private void Die()
     {
+        if (isDead) return;
         isDead = true;
+
+        Debug.Log("Temple destroyed");
 
         if (smokeParticlesPrefab != null)
         {
@@ -69,6 +83,11 @@ public class TempleHealth : MonoBehaviour
         if (explosionAudioSource != null && explosionClip != null)
         {
             explosionAudioSource.PlayOneShot(explosionClip);
+        }
+
+        if (gameManager != null)
+        {
+            gameManager.EndGame();
         }
 
         Destroy(gameObject);
