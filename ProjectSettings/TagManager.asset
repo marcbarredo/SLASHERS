@@ -12,6 +12,7 @@ TagManager:
   - Enemy
   - katana
   - Katana
+  - Blade
   layers:
   - Default
   - TransparentFX

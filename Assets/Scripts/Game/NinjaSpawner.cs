@@ -4,7 +4,7 @@ public class NinjaSpawner : MonoBehaviour
 {
     [Header("References")]
     [SerializeField] private Transform towerTarget;
-    [SerializeField] private GameObject ninjaPrefab;
+    [SerializeField] private GameObject[] ninjaPrefabs;
     [SerializeField] private float ninjaSpeed = 2.0f;
 
     [SerializeField] private Renderer landRenderer;
@@ -36,45 +36,69 @@ public class NinjaSpawner : MonoBehaviour
 
     private float _timer;
 
-    void Update()
+    private void Update()
     {
-        if (!towerTarget || !ninjaPrefab) return;
+        if (!towerTarget)
+        {
+            Debug.LogWarning("NinjaSpawner has no tower target assigned.");
+            return;
+        }
+
+        if (ninjaPrefabs == null || ninjaPrefabs.Length == 0)
+        {
+            Debug.LogWarning("No ninja prefabs assigned to NinjaSpawner.");
+            return;
+        }
 
         _timer += Time.deltaTime;
-        if (_timer < spawnEverySeconds) return;
+
+        if (_timer < spawnEverySeconds)
+            return;
+
         _timer = 0f;
 
-        if (CountAlive() >= maxAlive) return;
+        if (CountAlive() >= maxAlive)
+            return;
 
         SpawnOne();
     }
 
-    int CountAlive()
+    private int CountAlive()
     {
         return FindObjectsByType<NinjaMover>(FindObjectsSortMode.None).Length;
     }
 
-    void SpawnOne()
+    private void SpawnOne()
     {
         if (!TryGetSpawnPosition(out Vector3 pos))
+        {
+            Debug.LogWarning("NinjaSpawner could not find a valid spawn position.");
             return;
+        }
 
-        GameObject ninja = Instantiate(ninjaPrefab, pos, Quaternion.identity);
+        GameObject prefabToSpawn = ninjaPrefabs[Random.Range(0, ninjaPrefabs.Length)];
+
+        GameObject ninja = Instantiate(prefabToSpawn, pos, Quaternion.identity);
 
         if (audioSource != null && spawnSound != null)
         {
             audioSource.PlayOneShot(spawnSound);
         }
 
-        var mover = ninja.GetComponent<NinjaMover>();
+        NinjaMover mover = ninja.GetComponent<NinjaMover>();
+
         if (mover != null)
         {
             mover.SetTarget(towerTarget);
             mover.SetSpeed(ninjaSpeed);
         }
+        else
+        {
+            Debug.LogWarning("Spawned ninja does not have a NinjaMover component.");
+        }
     }
 
-    bool TryGetSpawnPosition(out Vector3 pos)
+    private bool TryGetSpawnPosition(out Vector3 pos)
     {
         Vector3 center = GetSpawnCenter();
         float radius = GetSpawnRadius();
@@ -97,14 +121,18 @@ public class NinjaSpawner : MonoBehaviour
         return false;
     }
 
-    Vector3 GetSpawnCenter()
+    private Vector3 GetSpawnCenter()
     {
-        if (landRenderer) return landRenderer.bounds.center;
-        if (fallbackCenter) return fallbackCenter.position;
+        if (landRenderer)
+            return landRenderer.bounds.center;
+
+        if (fallbackCenter)
+            return fallbackCenter.position;
+
         return towerTarget.position;
     }
 
-    float GetSpawnRadius()
+    private float GetSpawnRadius()
     {
         if (landRenderer)
         {
@@ -121,23 +149,25 @@ public class NinjaSpawner : MonoBehaviour
         return Mathf.Max(0.1f, fixedRadius);
     }
 
-    Vector3 RandomPointOnCircle(Vector3 center, float radius)
+    private Vector3 RandomPointOnCircle(Vector3 center, float radius)
     {
         float angle = Random.Range(0f, 360f) * Mathf.Deg2Rad;
+
         float x = center.x + Mathf.Cos(angle) * radius;
         float z = center.z + Mathf.Sin(angle) * radius;
 
         return new Vector3(x, center.y, z);
     }
 
-    bool FarEnoughFromTower(Vector3 p)
+    private bool FarEnoughFromTower(Vector3 p)
     {
         Vector3 towerXZ = new Vector3(towerTarget.position.x, 0f, towerTarget.position.z);
         Vector3 pXZ = new Vector3(p.x, 0f, p.z);
+
         return Vector3.Distance(pXZ, towerXZ) >= minDistanceFromTower;
     }
 
-    bool TryProjectToGround(Vector3 xz, out Vector3 groundPos)
+    private bool TryProjectToGround(Vector3 xz, out Vector3 groundPos)
     {
         Vector3 rayStart = new Vector3(xz.x, xz.y + rayStartHeight, xz.z);
 
