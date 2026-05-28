@@ -82,7 +82,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8203889226638395625, guid: c4a69e964de31604a9267bcc59bbbc1b, type: 3}
       propertyPath: m_Name
-      value: NinjaEnemy
+      value: NinjaEnemy (not use)
+      objectReference: {fileID: 0}
+    - target: {fileID: 8203889226638395625, guid: c4a69e964de31604a9267bcc59bbbc1b, type: 3}
+      propertyPath: m_TagString
+      value: Enemy
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
