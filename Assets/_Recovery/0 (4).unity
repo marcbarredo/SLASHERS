@@ -2555,15 +2555,15 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2240192319587228150, guid: f815139ae0c5a884687d4bc6d117cc51, type: 3}
       propertyPath: m_LocalScale.x
-      value: 20
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 2240192319587228150, guid: f815139ae0c5a884687d4bc6d117cc51, type: 3}
       propertyPath: m_LocalScale.y
-      value: 20
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 2240192319587228150, guid: f815139ae0c5a884687d4bc6d117cc51, type: 3}
       propertyPath: m_LocalScale.z
-      value: 20
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 2240192319587228150, guid: f815139ae0c5a884687d4bc6d117cc51, type: 3}
       propertyPath: m_LocalPosition.x
@@ -3231,8 +3231,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 5, y: 70, z: 15}
-  m_Center: {x: 0, y: 0, z: 10}
+  m_Size: {x: 1, y: 70, z: 8}
+  m_Center: {x: 0, y: 0, z: 4}
 --- !u!23 &931479204
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -3981,15 +3981,15 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2240192319587228150, guid: f815139ae0c5a884687d4bc6d117cc51, type: 3}
       propertyPath: m_LocalScale.x
-      value: 20
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 2240192319587228150, guid: f815139ae0c5a884687d4bc6d117cc51, type: 3}
       propertyPath: m_LocalScale.y
-      value: 20
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 2240192319587228150, guid: f815139ae0c5a884687d4bc6d117cc51, type: 3}
       propertyPath: m_LocalScale.z
-      value: 20
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 2240192319587228150, guid: f815139ae0c5a884687d4bc6d117cc51, type: 3}
       propertyPath: m_LocalPosition.x
@@ -8316,8 +8316,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 5, y: 70, z: 15}
-  m_Center: {x: 0, y: 0, z: 10}
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!23 &2039963494
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -8760,7 +8760,7 @@ MonoBehaviour:
   numberOfBaseStations: 4
   enableRotation: 1
   enableYAxis: 1
-  virtualWorldSpace: {x: 100, y: 6, z: 100}
+  virtualWorldSpace: {x: 100, y: 1, z: 100}
   players:
   - {fileID: 931479201}
   - {fileID: 2039963491}
