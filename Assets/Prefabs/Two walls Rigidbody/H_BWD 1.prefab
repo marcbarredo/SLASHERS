@@ -873,6 +873,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::TwoBarrierCutEnemy
   maxTimeBetweenBarriers: 0.15
   bladeTag: Blade
-  killCooldownAfterSuccess: 1
+  killCooldownAfterSuccess: 2
   dieSound: {fileID: 8300000, guid: 2a084c1271a12e94eb48169f2306208a, type: 3}
   destroyDelay: 0.1

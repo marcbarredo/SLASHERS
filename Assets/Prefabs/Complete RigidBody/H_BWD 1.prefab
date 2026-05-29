@@ -31,7 +31,40 @@ Transform:
   m_Children:
   - {fileID: 576430724009888452}
   - {fileID: 5476524677646140633}
+  - {fileID: 1022785973101055920}
+  - {fileID: 5934427292506753690}
   m_Father: {fileID: 2969068555833386638}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &4858862021182677167
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5934427292506753690}
+  m_Layer: 9
+  m_Name: ArrowEndPoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5934427292506753690
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4858862021182677167}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -0.8, y: 0, z: 0.02}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2090775303315101377}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &5500564753016315875
 GameObject:
@@ -145,6 +178,37 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!1 &5520311264466586394
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1022785973101055920}
+  m_Layer: 9
+  m_Name: ArrowStartPoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1022785973101055920
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5520311264466586394}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0.66, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2090775303315101377}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &5624863734488454532
 GameObject:
   m_ObjectHideFlags: 0
@@ -588,6 +652,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 9216339326981603028, guid: a66b5607f489b854095e06b50ea1e6be, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1264409936481378267}
+    - targetCorrespondingSourceObject: {fileID: 9216339326981603028, guid: a66b5607f489b854095e06b50ea1e6be, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 3125870647850034948}
   m_SourcePrefab: {fileID: 100100000, guid: a66b5607f489b854095e06b50ea1e6be, type: 3}
 --- !u!82 &857723285671977513 stripped
 AudioSource:
@@ -710,9 +777,31 @@ BoxCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 2.4540536, y: 4.4325175, z: 2.2156847}
-  m_Center: {x: 0.035755157, y: 1.7162586, z: -0.05959158}
+  m_Size: {x: 1.9190155, y: 4.4325175, z: 1.845273}
+  m_Center: {x: -0.046558954, y: 1.7162586, z: 0.12561464}
+--- !u!114 &3125870647850034948
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2969068555833490094}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0d228fe286b045a089c75271a76cce1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CompleteBoxCutEnemy
+  arrowStartPoint: {fileID: 1022785973101055920}
+  arrowEndPoint: {fileID: 5934427292506753690}
+  bladeTag: Blade
+  minSlashDistance: 0.8
+  maxTimeInsideCollider: 0.6
+  minSlashSpeed: 3
+  maxAngleDifference: 35
+  killCooldownAfterSuccess: 0.35
+  dieSound: {fileID: 8300000, guid: 2a084c1271a12e94eb48169f2306208a, type: 3}
+  destroyDelay: 0.1

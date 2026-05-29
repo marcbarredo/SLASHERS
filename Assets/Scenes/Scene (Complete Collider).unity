@@ -2196,7 +2196,7 @@ AudioListener:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 501768674}
-  m_Enabled: 0
+  m_Enabled: 1
 --- !u!20 &501768678
 Camera:
   m_ObjectHideFlags: 0
@@ -2804,7 +2804,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2240192319587228150, guid: f815139ae0c5a884687d4bc6d117cc51, type: 3}
       propertyPath: m_LocalScale.x
-      value: 20
+      value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 2240192319587228150, guid: f815139ae0c5a884687d4bc6d117cc51, type: 3}
       propertyPath: m_LocalScale.y
@@ -2812,7 +2812,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2240192319587228150, guid: f815139ae0c5a884687d4bc6d117cc51, type: 3}
       propertyPath: m_LocalScale.z
-      value: 20
+      value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 2240192319587228150, guid: f815139ae0c5a884687d4bc6d117cc51, type: 3}
       propertyPath: m_LocalPosition.x
@@ -3482,7 +3482,7 @@ GameObject:
   - component: {fileID: 931479210}
   m_Layer: 0
   m_Name: Player1
-  m_TagString: Untagged
+  m_TagString: Blade
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -4037,15 +4037,15 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2240192319587228150, guid: f815139ae0c5a884687d4bc6d117cc51, type: 3}
       propertyPath: m_LocalScale.x
-      value: 20
+      value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 2240192319587228150, guid: f815139ae0c5a884687d4bc6d117cc51, type: 3}
       propertyPath: m_LocalScale.y
-      value: 20
+      value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 2240192319587228150, guid: f815139ae0c5a884687d4bc6d117cc51, type: 3}
       propertyPath: m_LocalScale.z
-      value: 20
+      value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 2240192319587228150, guid: f815139ae0c5a884687d4bc6d117cc51, type: 3}
       propertyPath: m_LocalPosition.x
@@ -8340,7 +8340,7 @@ GameObject:
   - component: {fileID: 2039963498}
   m_Layer: 0
   m_Name: Player2
-  m_TagString: Untagged
+  m_TagString: Blade
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -8804,7 +8804,7 @@ AudioListener:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2092006270}
-  m_Enabled: 1
+  m_Enabled: 0
 --- !u!20 &2092006274
 Camera:
   m_ObjectHideFlags: 0
