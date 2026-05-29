@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -28,6 +29,16 @@ public class CompleteBoxCutEnemy : MonoBehaviour
     [Header("Death")]
     [SerializeField] private AudioClip dieSound;
     [SerializeField] private float destroyDelay = 0.1f;
+
+    [Header("Blood Splat")]
+    [SerializeField] private GameObject bloodSplatPrefab;
+    [SerializeField] private float bloodSplatFadeDuration = 0.35f;
+    [SerializeField] private float bloodSplatYOffset = 0.01f;
+
+    [Header("Blood Splash")]
+    [SerializeField] private GameObject bloodSplashPrefab;
+    [SerializeField] private float bloodSplashYOffset = 0.5f;
+    [SerializeField] private float destroyBloodSplashAfter = 2f;
 
     private static readonly Dictionary<int, float> nextAllowedKillTimeByBladeOwner = new Dictionary<int, float>();
     private readonly Dictionary<int, SlashEntryData> activeSlashes = new Dictionary<int, SlashEntryData>();
@@ -178,11 +189,52 @@ public class CompleteBoxCutEnemy : MonoBehaviour
         nextAllowedKillTimeByBladeOwner[bladeOwnerId] = Time.time + killCooldownAfterSuccess;
     }
 
+    private void SpawnBloodSplat()
+    {
+        if (bloodSplatPrefab == null)
+            return;
+
+        Vector3 bloodPosition = transform.position + Vector3.up * bloodSplatYOffset;
+
+        Vector3 prefabEuler = bloodSplatPrefab.transform.rotation.eulerAngles;
+
+        Quaternion bloodRotation = Quaternion.Euler(prefabEuler.x,Random.Range(0f, 360f),prefabEuler.z);
+        GameObject bloodSplat = Instantiate(bloodSplatPrefab,bloodPosition,bloodRotation);
+        bloodSplat.transform.localScale = bloodSplatPrefab.transform.localScale;
+
+        BloodSplatFade fade = bloodSplat.AddComponent<BloodSplatFade>();
+        fade.StartFade(bloodSplatFadeDuration);
+    }
+
+    private void SpawnBloodSplash()
+    {
+        if (bloodSplashPrefab == null)
+            return;
+
+        Vector3 splashPosition = transform.position + Vector3.up * bloodSplashYOffset;
+
+        GameObject bloodSplash = Instantiate(bloodSplashPrefab,splashPosition,bloodSplashPrefab.transform.rotation);
+
+        bloodSplash.transform.localScale = bloodSplashPrefab.transform.localScale;
+
+        ParticleSystem particleSystem = bloodSplash.GetComponent<ParticleSystem>();
+
+        if (particleSystem != null)
+        {
+            particleSystem.Play();
+    
+        }
+        Destroy(bloodSplash, destroyBloodSplashAfter);
+    }
+
     private void Die()
     {
         dead = true;
 
         Debug.Log($"{name}: killed by complete box direction cut.");
+
+        SpawnBloodSplat();
+        SpawnBloodSplash();
 
         if (dieSound != null)
         {
@@ -200,5 +252,51 @@ public class CompleteBoxCutEnemy : MonoBehaviour
         }
 
         Destroy(gameObject, destroyDelay);
+    }
+}
+
+public class BloodSplatFade : MonoBehaviour
+{
+    private Renderer bloodRenderer;
+    private Material material;
+    private float fadeDuration;
+
+    public void StartFade(float duration)
+    {
+        fadeDuration = duration;
+        bloodRenderer = GetComponent<Renderer>();
+
+        if (bloodRenderer == null)
+            return;
+
+        material = bloodRenderer.material;
+
+        Color color = material.color;
+        color.a = 0f;
+        material.color = color;
+
+        StartCoroutine(FadeIn());
+    }
+
+    private IEnumerator FadeIn()
+    {
+        if (material == null)
+            yield break;
+
+        float elapsed = 0f;
+        Color color = material.color;
+
+        while (elapsed < fadeDuration)
+        {
+            elapsed += Time.deltaTime;
+
+            color.a = Mathf.Clamp01(elapsed / fadeDuration);
+            material.color = color;
+
+            yield return null;
+        }
+
+        color.a = 1f;
+        material.color = color;
     }
 }

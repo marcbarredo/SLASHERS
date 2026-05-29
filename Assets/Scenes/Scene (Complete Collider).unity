@@ -3602,7 +3602,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 931479201}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d3ffff601f08d457d8d3f8c666ba5410, type: 3}
   m_Name: 
@@ -3734,7 +3734,7 @@ MonoBehaviour:
   groundTag: Ground
   rayStartHeight: 6
   groundOffset: 0.02
-  spawnEverySeconds: 5
+  spawnEverySeconds: 1.25
   maxAlive: 15
 --- !u!4 &970629778
 Transform:
@@ -8460,7 +8460,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2039963491}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d3ffff601f08d457d8d3f8c666ba5410, type: 3}
   m_Name: 

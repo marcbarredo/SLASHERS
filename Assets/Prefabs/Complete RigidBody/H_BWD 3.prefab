@@ -706,7 +706,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::NinjaMover
   target: {fileID: 0}
-  speed: 1.5
+  speed: 6
   stopDistance: 6
   attackInterval: 1.5
   towerDamage: 10
@@ -805,3 +805,9 @@ MonoBehaviour:
   killCooldownAfterSuccess: 0.35
   dieSound: {fileID: 8300000, guid: 2a084c1271a12e94eb48169f2306208a, type: 3}
   destroyDelay: 0.1
+  bloodSplatPrefab: {fileID: 3070080645935674551, guid: aa21ac34a146d4e7e9a3cb9966993fc3, type: 3}
+  bloodSplatFadeDuration: 0.35
+  bloodSplatYOffset: 0.01
+  bloodSplashPrefab: {fileID: 1968586304485042, guid: 6c86c599d7bf3464eb4506d2584fbe57, type: 3}
+  bloodSplashYOffset: 0.5
+  destroyBloodSplashAfter: 2
