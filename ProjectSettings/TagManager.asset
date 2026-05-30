@@ -13,6 +13,8 @@ TagManager:
   - katana
   - Katana
   - Blade
+  - Katana1
+  - Katana2
   layers:
   - Default
   - TransparentFX

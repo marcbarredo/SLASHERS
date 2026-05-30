@@ -10,6 +10,10 @@ public class TempleHealth : MonoBehaviour
     [Header("Health Bar")]
     [SerializeField] private Slider healthBar;
 
+    [Header("Visuals")]
+    [SerializeField] private GameObject templeVisualRoot;
+    [SerializeField] private Collider templeCollider;
+
     [Header("Death Effect")]
     [SerializeField] private GameObject smokeParticlesPrefab;
     [SerializeField] private float smokeYOffset = 1.5f;
@@ -19,20 +23,17 @@ public class TempleHealth : MonoBehaviour
     [SerializeField] private AudioSource explosionAudioSource;
     [SerializeField] private AudioClip explosionClip;
 
-    [Header("Game Manager")]
-    [SerializeField] private GameManager gameManager;
+    [Header("Flow")]
+    [SerializeField] private GameFlowManager gameFlowManager;
 
     private bool isDead = false;
 
     private void Start()
     {
-        currentHealth = maxHealth;
-        UpdateHealthBar();
+        ResetTemple();
 
-        if (gameManager == null)
-        {
-            gameManager = FindFirstObjectByType<GameManager>();
-        }
+        if (gameFlowManager == null)
+            gameFlowManager = FindFirstObjectByType<GameFlowManager>();
     }
 
     public void TakeDamage(int damage)
@@ -42,14 +43,25 @@ public class TempleHealth : MonoBehaviour
         currentHealth -= damage;
         currentHealth = Mathf.Clamp(currentHealth, 0, maxHealth);
 
-        Debug.Log("Temple took damage: " + damage + ". Current health: " + currentHealth);
-
         UpdateHealthBar();
 
         if (currentHealth <= 0)
         {
             Die();
         }
+    }
+
+    public void ResetTemple()
+    {
+        isDead = false;
+        currentHealth = maxHealth;
+        UpdateHealthBar();
+
+        if (templeVisualRoot != null)
+            templeVisualRoot.SetActive(true);
+
+        if (templeCollider != null)
+            templeCollider.enabled = true;
     }
 
     private void UpdateHealthBar()
@@ -64,8 +76,6 @@ public class TempleHealth : MonoBehaviour
     {
         if (isDead) return;
         isDead = true;
-
-        Debug.Log("Temple destroyed");
 
         if (smokeParticlesPrefab != null)
         {
@@ -85,11 +95,13 @@ public class TempleHealth : MonoBehaviour
             explosionAudioSource.PlayOneShot(explosionClip);
         }
 
-        if (gameManager != null)
-        {
-            gameManager.EndGame();
-        }
+        if (templeVisualRoot != null)
+            templeVisualRoot.SetActive(false);
 
-        Destroy(gameObject);
+        if (templeCollider != null)
+            templeCollider.enabled = false;
+
+        if (gameFlowManager != null)
+            gameFlowManager.OnTowerDestroyed();
     }
 }
