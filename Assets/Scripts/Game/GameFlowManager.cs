@@ -19,22 +19,42 @@ public class GameFlowManager : MonoBehaviour
     [SerializeField] private TempleHealth templeHealth;
     [SerializeField] private GameObject startDummiesRoot;
 
+    [Header("Gameplay UI")]
+    [SerializeField] private TMP_Text timerText;
+
     [Header("Start Delay")]
     [SerializeField] private float startRoundDelay = 1.5f;
-    private bool roundStarting = false;
 
+    private bool roundStarting = false;
     private bool p1Ready;
     private bool p2Ready;
     private bool roundRunning;
+
     private float roundStartTime;
+    private Coroutine startRoundCoroutine;
+    private Coroutine returnToStartCoroutine;
 
     private void Start()
     {
         ShowStartScreen();
     }
 
+    private void Update()
+    {
+        if (!roundRunning) return;
+
+        float elapsedTime = Time.time - roundStartTime;
+
+        if (timerText != null)
+        {
+            timerText.text = FormatTime(elapsedTime);
+        }
+    }
+
     public void RegisterPlayerReady(int playerId)
     {
+        if (roundRunning || roundStarting) return;
+
         if (playerId == 1)
             p1Ready = true;
         else if (playerId == 2)
@@ -42,10 +62,14 @@ public class GameFlowManager : MonoBehaviour
 
         UpdateReadyUI();
 
-        if (p1Ready && p2Ready && !roundStarting)
+        if (p1Ready && p2Ready)
         {
             roundStarting = true;
-            StartCoroutine(StartRoundAfterDelay());
+
+            if (startRoundCoroutine != null)
+                StopCoroutine(startRoundCoroutine);
+
+            startRoundCoroutine = StartCoroutine(StartRoundAfterDelay());
         }
     }
 
@@ -57,6 +81,7 @@ public class GameFlowManager : MonoBehaviour
 
     private void StartRound()
     {
+        roundStarting = false;
         roundRunning = true;
         roundStartTime = Time.time;
 
@@ -65,6 +90,12 @@ public class GameFlowManager : MonoBehaviour
 
         if (gameOverPanel != null)
             gameOverPanel.SetActive(false);
+
+        if (timerText != null)
+        {
+            timerText.gameObject.SetActive(true);
+            timerText.text = "0:00:0";
+        }
 
         if (startDummiesRoot != null)
             startDummiesRoot.SetActive(false);
@@ -84,6 +115,9 @@ public class GameFlowManager : MonoBehaviour
 
         float survivedTime = Time.time - roundStartTime;
 
+        if (timerText != null)
+            timerText.gameObject.SetActive(false);
+
         if (spawner != null)
             spawner.enabled = false;
 
@@ -93,9 +127,12 @@ public class GameFlowManager : MonoBehaviour
             gameOverPanel.SetActive(true);
 
         if (survivedTimeText != null)
-            survivedTimeText.text = "Has aguantat " + survivedTime.ToString("F1") + " segons";
+            survivedTimeText.text = "You have survived " + FormatTime(survivedTime);
 
-        StartCoroutine(ReturnToStartScreenAfterDelay());
+        if (returnToStartCoroutine != null)
+            StopCoroutine(returnToStartCoroutine);
+
+        returnToStartCoroutine = StartCoroutine(ReturnToStartScreenAfterDelay());
     }
 
     private IEnumerator ReturnToStartScreenAfterDelay()
@@ -111,6 +148,7 @@ public class GameFlowManager : MonoBehaviour
 
         p1Ready = false;
         p2Ready = false;
+
         UpdateReadyUI();
 
         if (startPanel != null)
@@ -119,11 +157,18 @@ public class GameFlowManager : MonoBehaviour
         if (gameOverPanel != null)
             gameOverPanel.SetActive(false);
 
+        if (timerText != null)
+        {
+            timerText.gameObject.SetActive(false);
+            timerText.text = "0:00.0";
+        }
+
         if (startDummiesRoot != null)
         {
             startDummiesRoot.SetActive(true);
 
             StartDummyReady[] dummies = startDummiesRoot.GetComponentsInChildren<StartDummyReady>(true);
+
             foreach (StartDummyReady dummy in dummies)
             {
                 dummy.ResetDummy();
@@ -156,5 +201,14 @@ public class GameFlowManager : MonoBehaviour
         {
             Destroy(enemy);
         }
+    }
+
+    private string FormatTime(float time)
+    {
+        int minutes = Mathf.FloorToInt(time / 60f);
+        int seconds = Mathf.FloorToInt(time % 60f);
+        int tenths = Mathf.FloorToInt((time * 10f) % 10f);
+
+        return minutes.ToString() + ":" + seconds.ToString("00") + "." + tenths.ToString();
     }
 }
