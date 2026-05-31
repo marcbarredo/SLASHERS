@@ -207,7 +207,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: 0.92246497, z: -0, w: 0.38608083}
   m_LocalPosition: {x: -0.0154953, y: 0, z: 0.4020077}
-  m_LocalScale: {x: 0.25, y: 0.15, z: 0.25}
+  m_LocalScale: {x: 0.25, y: 0.2, z: 0.25}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 2090775303315101377}
@@ -744,7 +744,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::EnemyCutDirection
   requiredCutDirection: 0
   arrowAppearDelay: 1
-  dieSound: {fileID: 8300000, guid: 2a084c1271a12e94eb48169f2306208a, type: 3}
+  dieSound: {fileID: 8300000, guid: 72fd3e9f32226494d948a246a6a72787, type: 3}
   vanishDuration: 2
   shrinkOnDeath: 1
 --- !u!114 &3484049173896259980
@@ -800,10 +800,10 @@ MonoBehaviour:
   bladeTag: Blade
   minSlashDistance: 0.8
   maxTimeInsideCollider: 0.6
-  minSlashSpeed: 3
-  maxAngleDifference: 35
+  minSlashSpeed: 4
+  maxAngleDifference: 20
   killCooldownAfterSuccess: 0.35
-  dieSound: {fileID: 8300000, guid: 2a084c1271a12e94eb48169f2306208a, type: 3}
+  dieSound: {fileID: 8300000, guid: 72fd3e9f32226494d948a246a6a72787, type: 3}
   destroyDelay: 0.1
   bloodSplatPrefab: {fileID: 1582014894630456750, guid: cceb19e73e806435c9ebf9b56c48708f, type: 3}
   bloodSplatFadeDuration: 0.35
