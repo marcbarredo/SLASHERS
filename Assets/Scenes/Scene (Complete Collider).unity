@@ -10141,6 +10141,72 @@ Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 93ac61a2f53010e489d3be5cf26c9240, type: 3}
   m_PrefabInstance: {fileID: 838002248}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &2017403372
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2017403374}
+  - component: {fileID: 2017403375}
+  m_Layer: 0
+  m_Name: SkeletonSpawner
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2017403374
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2017403372}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 24.4, z: 13.26}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2017403375
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2017403372}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: df7635e45558c489ba00be56b4d953d4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: '::'
+  towerTarget: {fileID: 936477485}
+  skeletonPrefabs:
+  - {fileID: 6073579654012741566, guid: 1113c9a93ce6e4a819cb7755b8dc2dc5, type: 3}
+  skeletonSpeed: 5
+  landRenderer: {fileID: 1114946552}
+  fallbackCenter: {fileID: 0}
+  audioSource: {fileID: 0}
+  spawnSound: {fileID: 0}
+  allowNormalSpawning: 0
+  radiusFactor: 0.9
+  fixedRadius: 10
+  edgeInset: 0.25
+  minDistanceFromTower: 3
+  maxTries: 40
+  groundTag: Ground
+  rayStartHeight: 10
+  groundOffset: 0.02
+  spawnEverySeconds: 2
+  maxAlive: 12
+  spawnOnEnemyDeath: 1
+  amountToSpawnOnDeath: 1
+  deathSpawnRadius: 0
 --- !u!1 &2039963491
 GameObject:
   m_ObjectHideFlags: 0
@@ -10877,6 +10943,7 @@ SceneRoots:
   - {fileID: 607619978}
   - {fileID: 262585806}
   - {fileID: 970629778}
+  - {fileID: 2017403374}
   - {fileID: 2041546605}
   - {fileID: 2102079886}
   - {fileID: 1316340268}

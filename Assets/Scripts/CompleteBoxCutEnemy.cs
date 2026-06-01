@@ -189,17 +189,52 @@ public class CompleteBoxCutEnemy : MonoBehaviour
         nextAllowedKillTimeByBladeOwner[bladeOwnerId] = Time.time + killCooldownAfterSuccess;
     }
 
+    private GameObject GetEnemyRoot()
+    {
+        NinjaMover ninjaMover = GetComponentInParent<NinjaMover>();
+
+        if (ninjaMover != null)
+            return ninjaMover.gameObject;
+
+        SkeletonMover skeletonMover = GetComponentInParent<SkeletonMover>();
+
+        if (skeletonMover != null)
+            return skeletonMover.gameObject;
+
+        return transform.root.gameObject;
+    }
+
+    private Vector3 GetDeathPosition()
+    {
+        GameObject enemyRoot = GetEnemyRoot();
+
+        if (enemyRoot != null)
+            return enemyRoot.transform.position;
+
+        return transform.position;
+    }
+
     private void SpawnBloodSplat()
     {
         if (bloodSplatPrefab == null)
             return;
 
-        Vector3 bloodPosition = transform.position + Vector3.up * bloodSplatYOffset;
+        Vector3 bloodPosition = GetDeathPosition() + Vector3.up * bloodSplatYOffset;
 
         Vector3 prefabEuler = bloodSplatPrefab.transform.rotation.eulerAngles;
 
-        Quaternion bloodRotation = Quaternion.Euler(prefabEuler.x,Random.Range(0f, 360f),prefabEuler.z);
-        GameObject bloodSplat = Instantiate(bloodSplatPrefab,bloodPosition,bloodRotation);
+        Quaternion bloodRotation = Quaternion.Euler(
+            prefabEuler.x,
+            Random.Range(0f, 360f),
+            prefabEuler.z
+        );
+
+        GameObject bloodSplat = Instantiate(
+            bloodSplatPrefab,
+            bloodPosition,
+            bloodRotation
+        );
+
         bloodSplat.transform.localScale = bloodSplatPrefab.transform.localScale;
 
         BloodSplatFade fade = bloodSplat.AddComponent<BloodSplatFade>();
@@ -211,9 +246,13 @@ public class CompleteBoxCutEnemy : MonoBehaviour
         if (bloodSplashPrefab == null)
             return;
 
-        Vector3 splashPosition = transform.position + Vector3.up * bloodSplashYOffset;
+        Vector3 splashPosition = GetDeathPosition() + Vector3.up * bloodSplashYOffset;
 
-        GameObject bloodSplash = Instantiate(bloodSplashPrefab,splashPosition,bloodSplashPrefab.transform.rotation);
+        GameObject bloodSplash = Instantiate(
+            bloodSplashPrefab,
+            splashPosition,
+            bloodSplashPrefab.transform.rotation
+        );
 
         bloodSplash.transform.localScale = bloodSplashPrefab.transform.localScale;
 
@@ -222,19 +261,32 @@ public class CompleteBoxCutEnemy : MonoBehaviour
         if (particleSystem != null)
         {
             particleSystem.Play();
-    
         }
+
         Destroy(bloodSplash, destroyBloodSplashAfter);
     }
 
     private void Die()
     {
+        if (dead)
+            return;
+
         dead = true;
 
         Debug.Log($"{name}: killed by complete box direction cut.");
 
+        GameObject enemyRoot = GetEnemyRoot();
+        Vector3 deathPosition = GetDeathPosition();
+
         SpawnBloodSplat();
         SpawnBloodSplash();
+
+        SkeletonSpawner spawner = FindFirstObjectByType<SkeletonSpawner>();
+
+        if (spawner != null)
+        {
+            spawner.SpawnAtDeathPosition(deathPosition);
+        }
 
         if (dieSound != null)
         {
@@ -251,7 +303,14 @@ public class CompleteBoxCutEnemy : MonoBehaviour
             Destroy(soundObject, dieSound.length + 0.1f);
         }
 
-        Destroy(gameObject, destroyDelay);
+        if (enemyRoot != null)
+        {
+            Destroy(enemyRoot, destroyDelay);
+        }
+        else
+        {
+            Destroy(gameObject, destroyDelay);
+        }
     }
 }
 

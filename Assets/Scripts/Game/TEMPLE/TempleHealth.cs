@@ -103,5 +103,7 @@ public class TempleHealth : MonoBehaviour
 
         if (gameFlowManager != null)
             gameFlowManager.OnTowerDestroyed();
+
+        Destroy(gameObject);
     }
 }
