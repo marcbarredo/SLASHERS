@@ -281,11 +281,12 @@ public class CompleteBoxCutEnemy : MonoBehaviour
         SpawnBloodSplat();
         SpawnBloodSplash();
 
-        SkeletonSpawner spawner = FindFirstObjectByType<SkeletonSpawner>();
+        bool isSkeleton = enemyRoot != null && enemyRoot.GetComponentInChildren<SkeletonMover>() != null;
+        bool isGolem = enemyRoot != null && enemyRoot.GetComponentInChildren<GolemCollider>() != null;
 
-        if (spawner != null)
+        if (!isSkeleton && !isGolem && NinjaSpawner.Instance != null)
         {
-            spawner.SpawnAtDeathPosition(deathPosition);
+            NinjaSpawner.Instance.TrySpawnSkeletonFromNinjaDeath(deathPosition);
         }
 
         if (dieSound != null)
