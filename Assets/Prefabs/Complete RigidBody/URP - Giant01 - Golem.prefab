@@ -1360,7 +1360,7 @@ GameObject:
   - component: {fileID: 2568706719626814034}
   m_Layer: 0
   m_Name: URP - Giant01 - Golem
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1396,7 +1396,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: '::'
   target: {fileID: 0}
-  speed: 2
+  speed: 0.8
   stopDistance: 0
   moveStartDelay: 1
   attackInterval: 3
@@ -1488,7 +1488,7 @@ MonoBehaviour:
   bladeTag: Blade
   hitCooldown: 0.25
   damagePerHit: 1
-  maxHealth: 150
+  maxHealth: 20
   healthSlider: {fileID: 960178265271890553}
   destroyDelay: 0.1
 --- !u!1 &5301548545218631008

@@ -18,12 +18,14 @@ public class GameFlowManager : MonoBehaviour
     [SerializeField] private NinjaSpawner spawner;
     [SerializeField] private TempleHealth templeHealth;
     [SerializeField] private GameObject startDummiesRoot;
+    [SerializeField] private GolemSpawner golemSpawner;
 
     [Header("Gameplay UI")]
     [SerializeField] private TMP_Text timerText;
 
     [Header("Start Delay")]
     [SerializeField] private float startRoundDelay = 1.5f;
+
 
     private bool roundStarting = false;
     private bool p1Ready;
@@ -103,6 +105,13 @@ public class GameFlowManager : MonoBehaviour
         if (spawner != null)
             spawner.enabled = true;
 
+        if (golemSpawner != null)
+        {
+            golemSpawner.ResetSpawner();
+            golemSpawner.enabled = true;
+        }
+
+
         if (templeHealth != null)
             templeHealth.ResetTemple();
     }
@@ -120,6 +129,9 @@ public class GameFlowManager : MonoBehaviour
 
         if (spawner != null)
             spawner.enabled = false;
+
+        if (golemSpawner != null)
+            golemSpawner.enabled = false;
 
         DestroyActiveEnemies();
 
@@ -177,6 +189,12 @@ public class GameFlowManager : MonoBehaviour
 
         if (spawner != null)
             spawner.enabled = false;
+
+        if (golemSpawner != null)
+        {
+            golemSpawner.ResetSpawner();
+            golemSpawner.enabled = false;
+        }
 
         DestroyActiveEnemies();
 

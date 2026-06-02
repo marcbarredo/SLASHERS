@@ -22,6 +22,7 @@ public class SkeletonMover : MonoBehaviour
     private float moveDelayTimer;
     private TempleHealth templeHealth;
 
+    // Public setter methods
     public void SetTarget(Transform t)
     {
         target = t;
@@ -41,6 +42,11 @@ public class SkeletonMover : MonoBehaviour
     public void SetSpeed(float s)
     {
         speed = Mathf.Max(0f, s);
+    }
+
+    public void SetStopDistance(float distance)
+    {
+        stopDistance = Mathf.Max(0f, distance);
     }
 
     private void Start()
@@ -75,7 +81,6 @@ public class SkeletonMover : MonoBehaviour
 
         Vector3 pos = transform.position;
         Vector3 goal = target.position;
-
         goal.y = pos.y;
 
         Vector3 delta = goal - pos;

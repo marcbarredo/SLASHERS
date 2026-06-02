@@ -11,6 +11,7 @@ public class GolemSpawner : MonoBehaviour
 
     [Header("Golem Movement")]
     [SerializeField] private float golemSpeed = 0.6f;
+    [SerializeField] private float golemStopDistance = 5f; // NEW: Stop distance from tower
 
     [Header("Spawn Radius From Tower")]
     [SerializeField] private float spawnRadiusFromTower = 20f;
@@ -42,18 +43,11 @@ public class GolemSpawner : MonoBehaviour
 
     private void SpawnGolem()
     {
-        if (hasSpawned)
-            return;
+        if (hasSpawned) return;
 
-        if (golemPrefab == null)
+        if (golemPrefab == null || towerTarget == null)
         {
-            Debug.LogWarning("GolemSpawner has no golem prefab assigned.");
-            return;
-        }
-
-        if (towerTarget == null)
-        {
-            Debug.LogWarning("GolemSpawner has no tower target assigned.");
+            Debug.LogWarning("GolemSpawner missing references.");
             return;
         }
 
@@ -62,74 +56,51 @@ public class GolemSpawner : MonoBehaviour
         Vector3 spawnPosition = GetRandomPositionAroundTower();
 
         if (TryProjectToGround(spawnPosition, out Vector3 groundPosition))
-        {
             spawnPosition = groundPosition;
-        }
 
         Quaternion rotation = GetRotationFacingTower(spawnPosition);
 
         GameObject golem = Instantiate(golemPrefab, spawnPosition, rotation);
 
-        Debug.Log("GOLEM SPAWNED: " + golem.name);
-
         if (audioSource != null && spawnSound != null)
-        {
             audioSource.PlayOneShot(spawnSound);
-        }
 
-        NinjaMover mover = golem.GetComponent<NinjaMover>();
-
+        // Setup movement
+        SkeletonMover mover = golem.GetComponent<SkeletonMover>();
         if (mover == null)
-            mover = golem.GetComponentInChildren<NinjaMover>();
+            mover = golem.GetComponentInChildren<SkeletonMover>();
 
-        if (mover == null)
+        if (mover != null)
         {
-            Debug.LogError("Golem has no NinjaMover on root or children.");
-            return;
+            mover.enabled = true;
+            mover.SetTarget(towerTarget);
+            mover.SetSpeed(golemSpeed);
+            mover.SetStopDistance(golemStopDistance); 
         }
-
-        mover.enabled = true;
-        mover.SetTarget(towerTarget);
-        mover.SetSpeed(golemSpeed);
-
-        Animator animator = golem.GetComponentInChildren<Animator>();
-
-        if (animator != null)
-            animator.applyRootMotion = false;
-
-        Debug.Log("GOLEM TARGET SET TO: " + towerTarget.name);
-        Debug.Log("GOLEM SPEED SET TO: " + golemSpeed);
+        else
+        {
+            Debug.LogError("Golem has no SkeletonMover component!");
+        }
     }
 
     private Vector3 GetRandomPositionAroundTower()
     {
         float angle = Random.Range(0f, 360f) * Mathf.Deg2Rad;
-
         float x = towerTarget.position.x + Mathf.Cos(angle) * spawnRadiusFromTower;
         float z = towerTarget.position.z + Mathf.Sin(angle) * spawnRadiusFromTower;
-
         return new Vector3(x, towerTarget.position.y, z);
     }
 
     private Quaternion GetRotationFacingTower(Vector3 spawnPosition)
     {
-        Vector3 directionToTower = towerTarget.position - spawnPosition;
-        directionToTower.y = 0f;
-
-        if (directionToTower.sqrMagnitude > 0.01f)
-            return Quaternion.LookRotation(directionToTower.normalized, Vector3.up);
-
-        return Quaternion.identity;
+        Vector3 dir = towerTarget.position - spawnPosition;
+        dir.y = 0f;
+        return dir.sqrMagnitude > 0.01f ? Quaternion.LookRotation(dir) : Quaternion.identity;
     }
 
     private bool TryProjectToGround(Vector3 position, out Vector3 groundPosition)
     {
-        Vector3 rayStart = new Vector3(
-            position.x,
-            position.y + rayStartHeight,
-            position.z
-        );
-
+        Vector3 rayStart = new Vector3(position.x, position.y + rayStartHeight, position.z);
         if (Physics.Raycast(rayStart, Vector3.down, out RaycastHit hit, rayStartHeight * 2f))
         {
             if (hit.collider.CompareTag(groundTag))
@@ -138,8 +109,13 @@ public class GolemSpawner : MonoBehaviour
                 return true;
             }
         }
-
         groundPosition = default;
         return false;
+    }
+
+    public void ResetSpawner()
+    {
+        timer = 0f;
+        hasSpawned = false;
     }
 }
