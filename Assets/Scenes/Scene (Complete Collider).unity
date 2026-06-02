@@ -3451,7 +3451,7 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 667245580}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: -115}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -3461,7 +3461,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 14, y: 0}
+  m_AnchoredPosition: {x: 14, y: -84}
   m_SizeDelta: {x: 160, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &667245582
@@ -4995,6 +4995,60 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1027314646}
   m_CullTransparentMesh: 1
+--- !u!1 &1069518882
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1069518884}
+  - component: {fileID: 1069518885}
+  m_Layer: 0
+  m_Name: GOLEM SPAWNER
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1069518884
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1069518882}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 24.4, z: 13.26}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1069518885
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1069518882}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9787b655e08334aa4b7f42b9f0b362f4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: '::'
+  towerTarget: {fileID: 936477485}
+  golemPrefab: {fileID: 2062918643}
+  spawnAfterSeconds: 35
+  golemSpeed: 5
+  spawnRadiusFromTower: 60
+  groundTag: Ground
+  rayStartHeight: 20
+  groundOffset: 0.02
+  audioSource: {fileID: 0}
+  spawnSound: {fileID: 0}
 --- !u!1 &1101310131
 GameObject:
   m_ObjectHideFlags: 0
@@ -6709,6 +6763,87 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1421236242}
   m_CullTransparentMesh: 1
+--- !u!1001 &1429597267
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: -2676902958206522753, guid: 3209111c0561c46fd922e9444dc09348, type: 3}
+      propertyPath: speed
+      value: 1.5
+      objectReference: {fileID: 0}
+    - target: {fileID: -2676902958206522753, guid: 3209111c0561c46fd922e9444dc09348, type: 3}
+      propertyPath: target
+      value: 
+      objectReference: {fileID: 936477485}
+    - target: {fileID: -2676902958206522753, guid: 3209111c0561c46fd922e9444dc09348, type: 3}
+      propertyPath: stopDistance
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 2568706719626814034, guid: 3209111c0561c46fd922e9444dc09348, type: 3}
+      propertyPath: maxHealth
+      value: 50
+      objectReference: {fileID: 0}
+    - target: {fileID: 4770420812777970958, guid: 3209111c0561c46fd922e9444dc09348, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 324.4
+      objectReference: {fileID: 0}
+    - target: {fileID: 4770420812777970958, guid: 3209111c0561c46fd922e9444dc09348, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 5.43575
+      objectReference: {fileID: 0}
+    - target: {fileID: 4770420812777970958, guid: 3209111c0561c46fd922e9444dc09348, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 23.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4770420812777970958, guid: 3209111c0561c46fd922e9444dc09348, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4770420812777970958, guid: 3209111c0561c46fd922e9444dc09348, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4770420812777970958, guid: 3209111c0561c46fd922e9444dc09348, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4770420812777970958, guid: 3209111c0561c46fd922e9444dc09348, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4770420812777970958, guid: 3209111c0561c46fd922e9444dc09348, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4770420812777970958, guid: 3209111c0561c46fd922e9444dc09348, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4770420812777970958, guid: 3209111c0561c46fd922e9444dc09348, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5294017477489100724, guid: 3209111c0561c46fd922e9444dc09348, type: 3}
+      propertyPath: m_Name
+      value: URP - Giant01 - Golem
+      objectReference: {fileID: 0}
+    - target: {fileID: 7686815500586134511, guid: 3209111c0561c46fd922e9444dc09348, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7686815500586134511, guid: 3209111c0561c46fd922e9444dc09348, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 3209111c0561c46fd922e9444dc09348, type: 3}
 --- !u!1 &1442127298
 GameObject:
   m_ObjectHideFlags: 0
@@ -10604,6 +10739,11 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2048581586}
   m_CullTransparentMesh: 1
+--- !u!1 &2062918643 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5294017477489100724, guid: 3209111c0561c46fd922e9444dc09348, type: 3}
+  m_PrefabInstance: {fileID: 1429597267}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &2079024911
 GameObject:
   m_ObjectHideFlags: 0
@@ -10943,6 +11083,7 @@ SceneRoots:
   - {fileID: 607619978}
   - {fileID: 262585806}
   - {fileID: 970629778}
+  - {fileID: 1069518884}
   - {fileID: 2017403374}
   - {fileID: 2041546605}
   - {fileID: 2102079886}
@@ -10951,3 +11092,4 @@ SceneRoots:
   - {fileID: 1857661230}
   - {fileID: 121091325}
   - {fileID: 1213237491}
+  - {fileID: 1429597267}
