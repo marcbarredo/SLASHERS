@@ -30,6 +30,7 @@ public class NinjaSpawner : MonoBehaviour
     [Header("Audio")]
     [SerializeField] private AudioSource audioSource;
     [SerializeField] private AudioClip spawnSound;
+    [SerializeField] private AudioClip golemSpawnSound;
 
     [Header("Spawn Circle Settings")]
     [Range(0.1f, 1f)]
@@ -197,6 +198,11 @@ public class NinjaSpawner : MonoBehaviour
         {
             aliveGolems.Add(golem);
             lastGolemSpawnTime = gameTime;
+
+            if (audioSource != null && golemSpawnSound != null)
+            {
+                audioSource.PlayOneShot(golemSpawnSound);
+            }
         }
     }
 
@@ -274,7 +280,7 @@ public class NinjaSpawner : MonoBehaviour
 
         aliveEnemies.Add(enemy);
 
-        if (audioSource != null && spawnSound != null)
+        if (audioSource != null && spawnSound != null && enemyType != EnemyType.Golem)
         {
             audioSource.PlayOneShot(spawnSound);
         }

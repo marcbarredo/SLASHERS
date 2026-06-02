@@ -1489,6 +1489,11 @@ MonoBehaviour:
   stopDistance: 16
   attackInterval: 4
   towerDamage: 40
+  stepAudioSource: {fileID: 5029707960908356056}
+  stepSound: {fileID: 8300000, guid: 03f884b49ec094205b498d5ac60e107f, type: 3}
+  stepInterval: 0.9
+  stepPitchRange: {x: 0.85, y: 1.05}
+  minSpeedForSteps: 0.05
   hitAudioSource: {fileID: 5029707960908356056}
   towerHitSound: {fileID: 8300000, guid: da8a5c6e19fb94c10a2de40ec81bfc5d, type: 3}
 --- !u!82 &5029707960908356056

@@ -694,7 +694,6 @@ MonoBehaviour:
   spawner: {fileID: 970629777}
   templeHealth: {fileID: 936477489}
   startDummiesRoot: {fileID: 1213237490}
-  golemSpawner: {fileID: 0}
   timerText: {fileID: 1676739892}
   startRoundDelay: 2
 --- !u!4 &121091325
@@ -4749,7 +4748,7 @@ MonoBehaviour:
   - {fileID: 5294017477489100724, guid: 3209111c0561c46fd922e9444dc09348, type: 3}
   ninjaBaseSpeed: 2.5
   skeletonBaseSpeed: 5
-  golemSpeed: 0.5
+  golemSpeed: 1
   startSpeedRandomRange: 0.3
   finalSpeedRandomRange: 2
   finalExtraSpeed: 1.8
@@ -4757,6 +4756,7 @@ MonoBehaviour:
   fallbackCenter: {fileID: 0}
   audioSource: {fileID: 519504823}
   spawnSound: {fileID: 8300000, guid: 39b7d955ee761443f99306d9dc7dcc38, type: 3}
+  golemSpawnSound: {fileID: 8300000, guid: 38e5cd37ac19c42cf96d0aa229204c2d, type: 3}
   radiusFactor: 0.9
   fixedRadius: 10
   edgeInset: 0.25
@@ -4779,7 +4779,7 @@ MonoBehaviour:
   startSkeletonChance: 0.1
   finalSkeletonChance: 0.45
   skeletonSpawnRadius: 0.4
-  obligatoryGolemTime: 100
+  obligatoryGolemTime: 2
   startGolemChance: 0.08
   finalGolemChance: 0.25
   minimumTimeBetweenGolems: 35

@@ -11,11 +11,34 @@ public class GolemMover : MonoBehaviour
     [SerializeField] private float attackInterval = 1.5f;
     [SerializeField] private int towerDamage = 80;
 
-    [Header("Audio")]
+    [Header("Step Audio")]
+    [SerializeField] private AudioSource stepAudioSource;
+    [SerializeField] private AudioClip stepSound;
+    [SerializeField] private float stepInterval = 0.9f;
+    [SerializeField] private Vector2 stepPitchRange = new Vector2(0.85f, 1.05f);
+    [SerializeField] private float minSpeedForSteps = 0.05f;
+
+    [Header("Hit Audio")]
     [SerializeField] private AudioSource hitAudioSource;
     [SerializeField] private AudioClip towerHitSound;
 
     private float attackTimer;
+    private float stepTimer;
+    private TempleHealth templeHealth;
+
+    private void Awake()
+    {
+        if (stepAudioSource == null)
+            stepAudioSource = GetComponent<AudioSource>();
+
+        if (hitAudioSource == null)
+            hitAudioSource = GetComponent<AudioSource>();
+    }
+
+    private void Start()
+    {
+        FindTempleHealth();
+    }
 
     private void Update()
     {
@@ -30,6 +53,7 @@ public class GolemMover : MonoBehaviour
         if (distance > stopDistance)
         {
             MoveTowardsTarget(direction);
+            HandleStepSound();
         }
         else
         {
@@ -50,6 +74,25 @@ public class GolemMover : MonoBehaviour
         transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, 8f * Time.deltaTime);
     }
 
+    private void HandleStepSound()
+    {
+        if (speed < minSpeedForSteps)
+            return;
+
+        if (stepAudioSource == null || stepSound == null)
+            return;
+
+        stepTimer += Time.deltaTime;
+
+        if (stepTimer < stepInterval)
+            return;
+
+        stepTimer = 0f;
+
+        stepAudioSource.pitch = Random.Range(stepPitchRange.x, stepPitchRange.y);
+        stepAudioSource.PlayOneShot(stepSound);
+    }
+
     private void AttackTower()
     {
         attackTimer += Time.deltaTime;
@@ -59,10 +102,8 @@ public class GolemMover : MonoBehaviour
 
         attackTimer = 0f;
 
-        TempleHealth templeHealth = target.GetComponent<TempleHealth>();
-
         if (templeHealth == null)
-            templeHealth = target.GetComponentInParent<TempleHealth>();
+            FindTempleHealth();
 
         if (templeHealth != null)
         {
@@ -75,13 +116,28 @@ public class GolemMover : MonoBehaviour
         }
     }
 
+    private void FindTempleHealth()
+    {
+        if (target == null)
+            return;
+
+        templeHealth = target.GetComponent<TempleHealth>();
+
+        if (templeHealth == null)
+            templeHealth = target.GetComponentInParent<TempleHealth>();
+
+        if (templeHealth == null)
+            templeHealth = target.GetComponentInChildren<TempleHealth>();
+    }
+
     public void SetTarget(Transform newTarget)
     {
         target = newTarget;
+        FindTempleHealth();
     }
 
     public void SetSpeed(float newSpeed)
     {
-        speed = newSpeed;
+        speed = Mathf.Max(0f, newSpeed);
     }
 }
