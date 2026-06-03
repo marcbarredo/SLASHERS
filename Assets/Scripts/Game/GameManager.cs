@@ -36,7 +36,7 @@ public class GameManager : MonoBehaviour
 
         if (survivedTimeText != null)
         {
-            survivedTimeText.text = "Has aguantat " + survivedTime.ToString("F1") + " segons";
+            survivedTimeText.text = "Time survived: " + survivedTime.ToString("F1") + " seconds";
         }
 
         Debug.Log("Game Over. Survived time: " + survivedTime);

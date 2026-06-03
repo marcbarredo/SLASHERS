@@ -328,7 +328,6 @@ MonoBehaviour:
   cutTriggerName: Cut
   resetStateName: stand
   readyDelay: 0.6
-  resetProtectionDelay: 0.25
 --- !u!54 &8554160332487157673
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -546,6 +545,10 @@ PrefabInstance:
     - target: {fileID: 3442434439936515120, guid: 2412295144a454d298e4e577b1a1516b, type: 3}
       propertyPath: m_Name
       value: New Text (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 3709075748169463140, guid: 2412295144a454d298e4e577b1a1516b, type: 3}
+      propertyPath: m_Text
+      value: P2 WAITING
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
