@@ -7,6 +7,10 @@ public class GolemMover : MonoBehaviour
     [SerializeField] private float speed = 0.5f;
     [SerializeField] private float stopDistance = 6f;
 
+    [Header("Animation")]
+    [SerializeField] private Animator animator;
+    [SerializeField] private string attackTriggerName = "Attack";
+
     [Header("Attack")]
     [SerializeField] private float attackInterval = 1.5f;
     [SerializeField] private int towerDamage = 80;
@@ -24,6 +28,7 @@ public class GolemMover : MonoBehaviour
 
     private float attackTimer;
     private float stepTimer;
+    private bool isAttacking;
     private TempleHealth templeHealth;
 
     private void Awake()
@@ -33,6 +38,12 @@ public class GolemMover : MonoBehaviour
 
         if (hitAudioSource == null)
             hitAudioSource = GetComponent<AudioSource>();
+
+        if (animator == null)
+            animator = GetComponentInChildren<Animator>();
+
+        if (animator != null)
+            animator.applyRootMotion = false;
     }
 
     private void Start()
@@ -50,28 +61,69 @@ public class GolemMover : MonoBehaviour
 
         float distance = direction.magnitude;
 
-        if (distance > stopDistance)
+        if (distance <= stopDistance)
         {
-            MoveTowardsTarget(direction);
-            HandleStepSound();
+            FaceTarget(direction);
+
+            if (!isAttacking)
+            {
+                isAttacking = true;
+                attackTimer = 0f;
+                AttackTower();
+            }
+            else
+            {
+                HandleAttackTimer();
+            }
+
+            return;
         }
-        else
-        {
-            AttackTower();
-        }
+
+        isAttacking = false;
+
+        MoveTowardsTarget(direction, distance);
+        HandleStepSound();
     }
 
-    private void MoveTowardsTarget(Vector3 direction)
+    private void MoveTowardsTarget(Vector3 direction, float distance)
     {
         if (direction.sqrMagnitude <= 0.001f)
             return;
 
         Vector3 moveDirection = direction.normalized;
 
-        transform.position += moveDirection * speed * Time.deltaTime;
+        float moveAmount = speed * Time.deltaTime;
+        float remainingDistanceBeforeStop = distance - stopDistance;
+
+        moveAmount = Mathf.Min(moveAmount, remainingDistanceBeforeStop);
+
+        transform.position += moveDirection * moveAmount;
+
+        FaceTarget(direction);
+    }
+
+    private void FaceTarget(Vector3 direction)
+    {
+        direction.y = 0f;
+
+        if (direction.sqrMagnitude <= 0.001f)
+            return;
+
+        Vector3 moveDirection = direction.normalized;
 
         Quaternion lookRotation = Quaternion.LookRotation(moveDirection, Vector3.up);
         transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, 8f * Time.deltaTime);
+    }
+
+    private void HandleAttackTimer()
+    {
+        attackTimer += Time.deltaTime;
+
+        if (attackTimer >= attackInterval)
+        {
+            attackTimer = 0f;
+            AttackTower();
+        }
     }
 
     private void HandleStepSound()
@@ -95,12 +147,10 @@ public class GolemMover : MonoBehaviour
 
     private void AttackTower()
     {
-        attackTimer += Time.deltaTime;
-
-        if (attackTimer < attackInterval)
-            return;
-
-        attackTimer = 0f;
+        if (animator != null)
+        {
+            animator.SetTrigger(attackTriggerName);
+        }
 
         if (templeHealth == null)
             FindTempleHealth();

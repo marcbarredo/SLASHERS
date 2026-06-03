@@ -7,6 +7,10 @@ public class NinjaMover : MonoBehaviour
     [SerializeField] private float speed = 1.2f;
     [SerializeField] private float stopDistance = 6f;
 
+    [Header("Animation")]
+    [SerializeField] private Animator animator;
+    [SerializeField] private string attackTriggerName = "Attack";
+
     [Header("Attack")]
     [SerializeField] private float attackInterval = 0.5f;
     [SerializeField] private int towerDamage = 40;
@@ -16,41 +20,21 @@ public class NinjaMover : MonoBehaviour
     [SerializeField] private AudioClip towerHitSound;
 
     private float attackTimer;
+    private bool isAttacking;
     private TempleHealth templeHealth;
 
-    public void SetTarget(Transform t)
+    private void Awake()
     {
-        target = t;
+        if (animator == null)
+            animator = GetComponentInChildren<Animator>();
 
-        if (target != null)
-        {
-            templeHealth = target.GetComponent<TempleHealth>();
-
-            if (templeHealth == null)
-                templeHealth = target.GetComponentInParent<TempleHealth>();
-
-            if (templeHealth == null)
-                templeHealth = target.GetComponentInChildren<TempleHealth>();
-        }
-    }
-
-    public void SetSpeed(float s)
-    {
-        speed = Mathf.Max(0f, s);
+        if (animator != null)
+            animator.applyRootMotion = false;
     }
 
     private void Start()
     {
-        if (target != null && templeHealth == null)
-        {
-            templeHealth = target.GetComponent<TempleHealth>();
-
-            if (templeHealth == null)
-                templeHealth = target.GetComponentInParent<TempleHealth>();
-
-            if (templeHealth == null)
-                templeHealth = target.GetComponentInChildren<TempleHealth>();
-        }
+        FindTempleHealth();
     }
 
     private void Update()
@@ -71,29 +55,60 @@ public class NinjaMover : MonoBehaviour
 
         if (distance <= stopDistance)
         {
-            attackTimer += Time.deltaTime;
+            FaceTarget(delta);
 
-            if (attackTimer >= attackInterval)
+            if (!isAttacking)
             {
+                isAttacking = true;
                 attackTimer = 0f;
                 AttackTower();
+            }
+            else
+            {
+                HandleAttackTimer();
             }
 
             return;
         }
 
-        Vector3 dir = delta.normalized;
-        transform.position = pos + dir * speed * Time.deltaTime;
+        isAttacking = false;
 
-        if (dir.sqrMagnitude > 0.01f)
+        Vector3 dir = delta.normalized;
+
+        float moveAmount = speed * Time.deltaTime;
+        float remainingDistanceBeforeStop = distance - stopDistance;
+
+        moveAmount = Mathf.Min(moveAmount, remainingDistanceBeforeStop);
+
+        transform.position = pos + dir * moveAmount;
+
+        FaceTarget(delta);
+    }
+
+    private void HandleAttackTimer()
+    {
+        attackTimer += Time.deltaTime;
+
+        if (attackTimer >= attackInterval)
         {
-            transform.forward = Vector3.Slerp(transform.forward, dir, 10f * Time.deltaTime);
+            attackTimer = 0f;
+            AttackTower();
         }
     }
 
     private void AttackTower()
     {
         Debug.Log("Ninja attacks tower");
+
+        if (animator != null)
+        {
+            animator.SetTrigger(attackTriggerName);
+        }
+
+        if (templeHealth == null)
+        {
+            FindTempleHealth();
+        }
 
         if (templeHealth == null)
         {
@@ -108,5 +123,41 @@ public class NinjaMover : MonoBehaviour
             hitAudioSource.pitch = Random.Range(0.9f, 1.1f);
             hitAudioSource.PlayOneShot(towerHitSound);
         }
+    }
+
+    private void FaceTarget(Vector3 delta)
+    {
+        delta.y = 0f;
+
+        if (delta.sqrMagnitude <= 0.01f)
+            return;
+
+        Vector3 dir = delta.normalized;
+        transform.forward = Vector3.Slerp(transform.forward, dir, 10f * Time.deltaTime);
+    }
+
+    private void FindTempleHealth()
+    {
+        if (target == null)
+            return;
+
+        templeHealth = target.GetComponent<TempleHealth>();
+
+        if (templeHealth == null)
+            templeHealth = target.GetComponentInParent<TempleHealth>();
+
+        if (templeHealth == null)
+            templeHealth = target.GetComponentInChildren<TempleHealth>();
+    }
+
+    public void SetTarget(Transform t)
+    {
+        target = t;
+        FindTempleHealth();
+    }
+
+    public void SetSpeed(float s)
+    {
+        speed = Mathf.Max(0f, s);
     }
 }

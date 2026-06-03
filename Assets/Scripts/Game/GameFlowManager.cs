@@ -6,8 +6,8 @@ public class GameFlowManager : MonoBehaviour
 {
     [Header("Start Screen UI")]
     [SerializeField] private GameObject startPanel;
-    [SerializeField] private TMP_Text p1StatusText;
-    [SerializeField] private TMP_Text p2StatusText;
+    [SerializeField] private TextMesh p1StatusText;
+    [SerializeField] private TextMesh p2StatusText;
 
     [Header("Game Over UI")]
     [SerializeField] private GameObject gameOverPanel;
@@ -18,6 +18,7 @@ public class GameFlowManager : MonoBehaviour
     [SerializeField] private NinjaSpawner spawner;
     [SerializeField] private TempleHealth templeHealth;
     [SerializeField] private GameObject startDummiesRoot;
+    [SerializeField] private GameObject objectToAppearOnStart;
 
     [Header("Gameplay UI")]
     [SerializeField] private TMP_Text timerText;
@@ -92,6 +93,9 @@ public class GameFlowManager : MonoBehaviour
         if (gameOverPanel != null)
             gameOverPanel.SetActive(false);
 
+        if (objectToAppearOnStart != null)
+            objectToAppearOnStart.SetActive(true);
+
         if (timerText != null)
         {
             timerText.gameObject.SetActive(true);
@@ -152,6 +156,9 @@ public class GameFlowManager : MonoBehaviour
         p2Ready = false;
 
         UpdateReadyUI();
+
+        if (objectToAppearOnStart != null)
+            objectToAppearOnStart.SetActive(false);
 
         if (startPanel != null)
             startPanel.SetActive(true);

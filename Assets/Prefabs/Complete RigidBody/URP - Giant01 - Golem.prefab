@@ -1485,8 +1485,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GolemMover
   target: {fileID: 0}
-  speed: 0.5
-  stopDistance: 16
+  speed: 1
+  stopDistance: 14
+  animator: {fileID: 0}
+  attackTriggerName: Attack
   attackInterval: 4
   towerDamage: 40
   stepAudioSource: {fileID: 5029707960908356056}
