@@ -159,6 +159,20 @@ public class NinjaSpawner : MonoBehaviour
         obligatoryGolemSpawned = true;
     }
 
+    public void ResetSpawner()
+    {
+        timer = 0f;
+        gameTime = 0f;
+
+        lastGolemSpawnTime = -999f;
+        obligatoryGolemSpawned = false;
+
+        aliveEnemies.Clear();
+        aliveGolems.Clear();
+
+        Debug.Log("NinjaSpawner difficulty reset.");
+    }
+
     private void SpawnEnemyByDifficulty()
     {
         if (ShouldSpawnRandomGolem())

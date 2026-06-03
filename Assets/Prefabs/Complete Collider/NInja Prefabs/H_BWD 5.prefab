@@ -707,7 +707,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::NinjaMover
   target: {fileID: 0}
   speed: 6
-  stopDistance: 6
+  stopDistance: 8
   animator: {fileID: 0}
   attackTriggerName: Attack
   attackInterval: 1.5
@@ -723,10 +723,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 2969068555833490094}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 452ad8ca7e5805c48b743a155f96a9cc, type: 3}
+  m_Script: {fileID: 11500000, guid: 649d0c5b9c9c94c5db81989a7eaec973, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::NinjaAnimatorDriver
-  animator: {fileID: 2323766534069769720}
+  animator: {fileID: 0}
   velocityParam: Velocity
   movingParam: Moving
   dampTime: 0.12

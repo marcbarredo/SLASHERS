@@ -17,8 +17,27 @@ public class GameFlowManager : MonoBehaviour
     [Header("Gameplay References")]
     [SerializeField] private NinjaSpawner spawner;
     [SerializeField] private TempleHealth templeHealth;
-    [SerializeField] private GameObject startDummiesRoot;
+
+    [Tooltip("Put Environment here. This is the gameplay world/tower/arena that appears only during the round.")]
     [SerializeField] private GameObject objectToAppearOnStart;
+
+    [Header("Start Dummies")]
+    [SerializeField] private GameObject startDummiesRoot;
+
+    [SerializeField] private GameObject dummyP1Prefab;
+    [SerializeField] private GameObject dummyP2Prefab;
+
+    [SerializeField] private Transform dummyP1Spawn;
+    [SerializeField] private Transform dummyP2Spawn;
+
+    [SerializeField] private Transform player1BladeRoot;
+    [SerializeField] private Transform player2BladeRoot;
+
+    private GameObject currentDummyP1;
+    private GameObject currentDummyP2;
+
+    [Header("Audio")]
+    [SerializeField] private MusicRestartManager musicRestartManager;
 
     [Header("Gameplay UI")]
     [SerializeField] private TMP_Text timerText;
@@ -26,8 +45,7 @@ public class GameFlowManager : MonoBehaviour
     [Header("Start Delay")]
     [SerializeField] private float startRoundDelay = 1.5f;
 
-
-    private bool roundStarting = false;
+    private bool roundStarting;
     private bool p1Ready;
     private bool p2Ready;
     private bool roundRunning;
@@ -38,24 +56,24 @@ public class GameFlowManager : MonoBehaviour
 
     private void Start()
     {
-        ShowStartScreen();
+        ShowStartScreen(true);
     }
 
     private void Update()
     {
-        if (!roundRunning) return;
+        if (!roundRunning)
+            return;
 
         float elapsedTime = Time.time - roundStartTime;
 
         if (timerText != null)
-        {
             timerText.text = FormatTime(elapsedTime);
-        }
     }
 
     public void RegisterPlayerReady(int playerId)
     {
-        if (roundRunning || roundStarting) return;
+        if (roundRunning || roundStarting)
+            return;
 
         if (playerId == 1)
             p1Ready = true;
@@ -93,28 +111,47 @@ public class GameFlowManager : MonoBehaviour
         if (gameOverPanel != null)
             gameOverPanel.SetActive(false);
 
+        // Show environment/tower/arena when game starts.
         if (objectToAppearOnStart != null)
             objectToAppearOnStart.SetActive(true);
 
         if (timerText != null)
         {
             timerText.gameObject.SetActive(true);
-            timerText.text = "0:00:0";
+            timerText.text = "0:00.0";
         }
 
-        if (startDummiesRoot != null)
-            startDummiesRoot.SetActive(false);
+        // Remove start dummies when round begins.
+        DestroyStartDummies();
 
-        if (spawner != null)
-            spawner.enabled = true;
-
+        // Reset tower health after environment is active.
         if (templeHealth != null)
+        {
+            templeHealth.gameObject.SetActive(true);
             templeHealth.ResetTemple();
+        }
+        else
+        {
+            Debug.LogWarning("GameFlowManager has no TempleHealth assigned.");
+        }
+
+        // Start enemy spawning.
+        if (spawner != null)
+        {
+            spawner.gameObject.SetActive(true);
+            spawner.ResetSpawner();
+            spawner.enabled = true;
+        }
+        else
+        {
+            Debug.LogWarning("GameFlowManager has no Spawner assigned.");
+        }
     }
 
     public void OnTowerDestroyed()
     {
-        if (!roundRunning) return;
+        if (!roundRunning)
+            return;
 
         roundRunning = false;
 
@@ -125,7 +162,6 @@ public class GameFlowManager : MonoBehaviour
 
         if (spawner != null)
             spawner.enabled = false;
-
 
         DestroyActiveEnemies();
 
@@ -144,10 +180,10 @@ public class GameFlowManager : MonoBehaviour
     private IEnumerator ReturnToStartScreenAfterDelay()
     {
         yield return new WaitForSeconds(returnToStartDelay);
-        ShowStartScreen();
+        ShowStartScreen(true);
     }
 
-    private void ShowStartScreen()
+    private void ShowStartScreen(bool restartMusic)
     {
         roundRunning = false;
         roundStarting = false;
@@ -155,10 +191,22 @@ public class GameFlowManager : MonoBehaviour
         p1Ready = false;
         p2Ready = false;
 
+        if (restartMusic)
+            RestartMusic();
+
         UpdateReadyUI();
 
+        if (spawner != null)
+            spawner.enabled = false;
+
+        DestroyActiveEnemies();
+
+        // Hide/reset gameplay world when returning to menu.
         if (objectToAppearOnStart != null)
             objectToAppearOnStart.SetActive(false);
+
+        if (templeHealth != null)
+            templeHealth.ResetTemple();
 
         if (startPanel != null)
             startPanel.SetActive(true);
@@ -172,25 +220,92 @@ public class GameFlowManager : MonoBehaviour
             timerText.text = "0:00.0";
         }
 
+        RespawnStartDummies();
+    }
+
+    private void RespawnStartDummies()
+    {
         if (startDummiesRoot != null)
-        {
             startDummiesRoot.SetActive(true);
 
-            StartDummyReady[] dummies = startDummiesRoot.GetComponentsInChildren<StartDummyReady>(true);
+        DestroyStartDummies();
 
-            foreach (StartDummyReady dummy in dummies)
-            {
-                dummy.ResetDummy();
-            }
+        if (dummyP1Prefab != null && dummyP1Spawn != null)
+        {
+            currentDummyP1 = Instantiate(
+                dummyP1Prefab,
+                dummyP1Spawn.position,
+                dummyP1Prefab.transform.rotation,
+                startDummiesRoot != null ? startDummiesRoot.transform : null
+            );
+
+            SetupDummy(currentDummyP1, 1, player1BladeRoot);
+        }
+        else
+        {
+            Debug.LogWarning("Dummy P1 Prefab or Dummy P1 Spawn is not assigned.");
         }
 
-        if (spawner != null)
-            spawner.enabled = false;
+        if (dummyP2Prefab != null && dummyP2Spawn != null)
+        {
+            currentDummyP2 = Instantiate(
+                dummyP2Prefab,
+                dummyP2Spawn.position,
+                dummyP2Prefab.transform.rotation,
+                startDummiesRoot != null ? startDummiesRoot.transform : null
+            );
 
-        DestroyActiveEnemies();
+            SetupDummy(currentDummyP2, 2, player2BladeRoot);
+        }
+        else
+        {
+            Debug.LogWarning("Dummy P2 Prefab or Dummy P2 Spawn is not assigned.");
+        }
+    }
 
-        if (templeHealth != null)
-            templeHealth.ResetTemple();
+    private void DestroyStartDummies()
+    {
+        if (currentDummyP1 != null)
+        {
+            Destroy(currentDummyP1);
+            currentDummyP1 = null;
+        }
+
+        if (currentDummyP2 != null)
+        {
+            Destroy(currentDummyP2);
+            currentDummyP2 = null;
+        }
+    }
+
+    private void SetupDummy(GameObject dummy, int playerId, Transform bladeRoot)
+    {
+        if (dummy == null)
+            return;
+
+        StartDummyReady ready = dummy.GetComponent<StartDummyReady>();
+
+        if (ready == null)
+            ready = dummy.GetComponentInChildren<StartDummyReady>();
+
+        if (ready != null)
+        {
+            ready.Setup(playerId, this, bladeRoot);
+            ready.ResetDummy();
+        }
+        else
+        {
+            Debug.LogWarning(dummy.name + " has no StartDummyReady script.");
+        }
+    }
+
+    private void RestartMusic()
+    {
+        if (musicRestartManager == null)
+            musicRestartManager = FindFirstObjectByType<MusicRestartManager>();
+
+        if (musicRestartManager != null)
+            musicRestartManager.RestartMusic();
     }
 
     private void UpdateReadyUI()
@@ -207,9 +322,7 @@ public class GameFlowManager : MonoBehaviour
         GameObject[] enemies = GameObject.FindGameObjectsWithTag("Enemy");
 
         foreach (GameObject enemy in enemies)
-        {
             Destroy(enemy);
-        }
     }
 
     private string FormatTime(float time)
@@ -218,6 +331,6 @@ public class GameFlowManager : MonoBehaviour
         int seconds = Mathf.FloorToInt(time % 60f);
         int tenths = Mathf.FloorToInt((time * 10f) % 10f);
 
-        return minutes.ToString() + ":" + seconds.ToString("00") + "." + tenths.ToString();
+        return minutes + ":" + seconds.ToString("00") + "." + tenths;
     }
 }

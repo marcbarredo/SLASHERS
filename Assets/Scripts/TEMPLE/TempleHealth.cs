@@ -30,15 +30,16 @@ public class TempleHealth : MonoBehaviour
 
     private void Start()
     {
-        ResetTemple();
-
         if (gameFlowManager == null)
             gameFlowManager = FindFirstObjectByType<GameFlowManager>();
+
+        ResetTemple();
     }
 
     public void TakeDamage(int damage)
     {
-        if (isDead) return;
+        if (isDead)
+            return;
 
         currentHealth -= damage;
         currentHealth = Mathf.Clamp(currentHealth, 0, maxHealth);
@@ -55,13 +56,14 @@ public class TempleHealth : MonoBehaviour
     {
         isDead = false;
         currentHealth = maxHealth;
-        UpdateHealthBar();
 
         if (templeVisualRoot != null)
             templeVisualRoot.SetActive(true);
 
         if (templeCollider != null)
             templeCollider.enabled = true;
+
+        UpdateHealthBar();
     }
 
     private void UpdateHealthBar()
@@ -74,7 +76,9 @@ public class TempleHealth : MonoBehaviour
 
     private void Die()
     {
-        if (isDead) return;
+        if (isDead)
+            return;
+
         isDead = true;
 
         if (smokeParticlesPrefab != null)
@@ -103,7 +107,5 @@ public class TempleHealth : MonoBehaviour
 
         if (gameFlowManager != null)
             gameFlowManager.OnTowerDestroyed();
-
-        Destroy(gameObject);
     }
 }

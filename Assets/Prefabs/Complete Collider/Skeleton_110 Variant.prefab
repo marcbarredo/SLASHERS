@@ -2367,7 +2367,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: '::'
   target: {fileID: 0}
   speed: 10
-  stopDistance: 7
+  stopDistance: 6
   moveStartDelay: 1
   attackInterval: 0.2
   towerDamage: 1

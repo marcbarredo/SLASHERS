@@ -8,41 +8,65 @@ public class StartDummyReady : MonoBehaviour
     [SerializeField] private string requiredSwordTag = "Blade";
     [SerializeField] private GameFlowManager gameFlowManager;
 
+    [Header("Only This Player Can Cut This Dummy")]
+    [SerializeField] private Transform requiredBladeRoot;
+
     [Header("Animation")]
     [SerializeField] private Animator animator;
     [SerializeField] private string cutTriggerName = "Cut";
     [SerializeField] private string resetStateName = "stand";
     [SerializeField] private float readyDelay = 0.6f;
 
-    private bool alreadyCut = false;
-
-    private Vector3 startPosition;
-    private Quaternion startRotation;
-    private Vector3 startScale;
-
-    private Rigidbody rb;
+    private bool alreadyCut;
+    private Coroutine cutCoroutine;
 
     private void Awake()
     {
         if (animator == null)
             animator = GetComponent<Animator>();
+    }
 
-        rb = GetComponent<Rigidbody>();
+    public void Setup(int newPlayerId, GameFlowManager newGameFlowManager, Transform newBladeRoot)
+    {
+        playerId = newPlayerId;
+        gameFlowManager = newGameFlowManager;
+        requiredBladeRoot = newBladeRoot;
 
-        startPosition = transform.position;
-        startRotation = transform.rotation;
-        startScale = transform.localScale;
+        if (animator == null)
+            animator = GetComponent<Animator>();
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        if (alreadyCut) return;
+        if (alreadyCut)
+            return;
 
         if (!other.CompareTag(requiredSwordTag))
             return;
 
+        if (!IsCorrectPlayerBlade(other.transform))
+            return;
+
         alreadyCut = true;
-        StartCoroutine(CutSequence());
+
+        if (cutCoroutine != null)
+            StopCoroutine(cutCoroutine);
+
+        cutCoroutine = StartCoroutine(CutSequence());
+    }
+
+    private bool IsCorrectPlayerBlade(Transform bladeTransform)
+    {
+        if (requiredBladeRoot == null)
+        {
+            Debug.LogWarning(gameObject.name + " has no Required Blade Root assigned.");
+            return true;
+        }
+
+        if (bladeTransform == requiredBladeRoot)
+            return true;
+
+        return bladeTransform.IsChildOf(requiredBladeRoot);
     }
 
     private IEnumerator CutSequence()
@@ -51,6 +75,7 @@ public class StartDummyReady : MonoBehaviour
 
         if (animator != null)
         {
+            animator.enabled = true;
             animator.ResetTrigger(cutTriggerName);
             animator.SetTrigger(cutTriggerName);
         }
@@ -58,30 +83,22 @@ public class StartDummyReady : MonoBehaviour
         yield return new WaitForSeconds(readyDelay);
 
         if (gameFlowManager != null)
-        {
             gameFlowManager.RegisterPlayerReady(playerId);
-        }
         else
-        {
             Debug.LogError("GameFlowManager is not assigned on " + gameObject.name);
-        }
+
+        cutCoroutine = null;
     }
 
     public void ResetDummy()
     {
         alreadyCut = false;
 
-        gameObject.SetActive(true);
-
-        if (rb != null)
+        if (cutCoroutine != null)
         {
-            rb.linearVelocity = Vector3.zero;
-            rb.angularVelocity = Vector3.zero;
+            StopCoroutine(cutCoroutine);
+            cutCoroutine = null;
         }
-
-        transform.position = startPosition;
-        transform.rotation = startRotation;
-        transform.localScale = startScale;
 
         if (animator == null)
             animator = GetComponent<Animator>();
@@ -89,17 +106,12 @@ public class StartDummyReady : MonoBehaviour
         if (animator != null)
         {
             animator.enabled = true;
-            animator.applyRootMotion = false;
-
             animator.ResetTrigger(cutTriggerName);
-
             animator.Rebind();
             animator.Update(0f);
 
             animator.Play(resetStateName, 0, 0f);
             animator.Update(0f);
         }
-
-        Debug.Log(gameObject.name + " reset to " + resetStateName);
     }
 }
