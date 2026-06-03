@@ -3940,7 +3940,7 @@ MonoBehaviour:
   golemSpeed: 1
   startSpeedRandomRange: 0.3
   finalSpeedRandomRange: 2
-  finalExtraSpeed: 1.9
+  finalExtraSpeed: 1.8
   landRenderer: {fileID: 1114946552}
   fallbackCenter: {fileID: 0}
   audioSource: {fileID: 519504823}
@@ -3968,10 +3968,10 @@ MonoBehaviour:
   startSkeletonChance: 0.2
   finalSkeletonChance: 0.6
   skeletonSpawnRadius: 0.4
-  obligatoryGolemTime: 60
+  obligatoryGolemTime: 100
   startGolemChance: 0.08
   finalGolemChance: 0.25
-  minimumTimeBetweenGolems: 45
+  minimumTimeBetweenGolems: 35
 --- !u!4 &970629778
 Transform:
   m_ObjectHideFlags: 0
@@ -5530,11 +5530,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 222663027213633559, guid: e491ddb5ce8f24153a2a1ebd93dca4db, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -12.4
+      value: -4.0154
       objectReference: {fileID: 0}
     - target: {fileID: 222663027213633559, guid: e491ddb5ce8f24153a2a1ebd93dca4db, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 36.7
+      value: 36.597
       objectReference: {fileID: 0}
     - target: {fileID: 1764334536317458987, guid: e491ddb5ce8f24153a2a1ebd93dca4db, type: 3}
       propertyPath: m_LocalPosition.x
@@ -5579,17 +5579,6 @@ PrefabInstance:
     - target: {fileID: 2552929683211110157, guid: e491ddb5ce8f24153a2a1ebd93dca4db, type: 3}
       propertyPath: m_Name
       value: CANVAS START
-      objectReference: {fileID: 0}
-    - target: {fileID: 3860507603141816806, guid: e491ddb5ce8f24153a2a1ebd93dca4db, type: 3}
-      propertyPath: m_Name
-      value: Subtitle
-      objectReference: {fileID: 0}
-    - target: {fileID: 5163993243725194924, guid: e491ddb5ce8f24153a2a1ebd93dca4db, type: 3}
-      propertyPath: m_Text
-      value: 'PROTECT THE TEMPLE TOGETHER!
-
-        - BOTH PLAYERS MUST SLASH THEIR
-        DUMMY TO START-'
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
